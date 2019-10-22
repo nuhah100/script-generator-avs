@@ -11,7 +11,13 @@ namespace ScriptGeneratorAVS.Classes
 
         private static string MainVideo;
         private static List<string> Subtitles = new List<string>();
+        private static List<string> Plugins = new List<string>();
 
+        public static void SetPlugins(string[] names)
+        {
+            foreach (var l in names)
+                Plugins.Add(l);
+        }
         public static void SetMainVideo(string url)
         {
             Builder.MainVideo = url;

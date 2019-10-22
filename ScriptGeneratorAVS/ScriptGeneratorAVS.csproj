@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Paths.cs" />
     <Compile Include="SetupDLL.xaml.cs">
       <DependentUpon>SetupDLL.xaml</DependentUpon>
     </Compile>

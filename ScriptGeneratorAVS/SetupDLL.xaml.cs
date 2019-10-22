@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using ScriptGeneratorAVS.Classes;
 
 namespace ScriptGeneratorAVS
 {
@@ -61,15 +62,15 @@ namespace ScriptGeneratorAVS
         {
             if(txtFF.Text == "" || txtIQ.Text == ""||txtVS.Text =="")
             {
-                //MassageBox
+                MessageBox.Show("You didnt fill all the parts", "Notification");
                 return;
             }
             string s = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string name = "ScriptGenerator/Settings.txt";
-            if(File.Exists(s+name))
-            {
-                File.WriteAllText(s+name,);
-            }
+            string name = Paths.SaveName;
+            
+            File.WriteAllText(s+@"/"+name,txtFF.Text + "\n"+txtIQ.Text+"\n"+txtVS.Text+"\n");
+            this.Close();
+            
         }
     }
 }

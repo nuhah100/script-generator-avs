@@ -2,6 +2,7 @@
 using ScriptGeneratorAVS.Classes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,9 +24,20 @@ namespace ScriptGeneratorAVS
     public partial class MainWindow : Window
     {
         SetUpDLL dl = new SetUpDLL();
+
         public MainWindow()
         {
             InitializeComponent();
+            if(!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+@"\"+Paths.SaveName))
+            {
+                MessageBox.Show("You must first set all the dll files.","Warning");
+                dl.Show();
+            }
+            else
+            {
+                string[] a = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName);
+                Builder.SetPlugins(a);
+            }
         }
         private void BtnFindVideo_Click(object sender, RoutedEventArgs e)
         {
