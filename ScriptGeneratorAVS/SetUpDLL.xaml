@@ -1,0 +1,22 @@
+﻿<Window x:Class="ScriptGeneratorAVS.SetUpDLL"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScriptGeneratorAVS"
+        mc:Ignorable="d"
+        Title="SetupDLL" Height="320" Width="220">
+    <Grid>
+        <Label Content="VsFilterMod" HorizontalAlignment="Left" Height="29" Margin="10,25,0,0" VerticalAlignment="Top" Width="80"/>
+        <TextBox x:Name="txtVS" HorizontalAlignment="Left" Height="20" Margin="10,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="80"/>
+        <Button x:Name="btnVS" Content="Find" HorizontalAlignment="Left" Height="20" Margin="98,59,0,0" VerticalAlignment="Top" Width="40" Click="BtnVS_Click"/>
+        <Label Content="ffms2" HorizontalAlignment="Left" Height="29" Margin="10,90,0,0" VerticalAlignment="Top" Width="69"/>
+        <TextBox x:Name="txtFF" HorizontalAlignment="Left" Height="20" Margin="10,124,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="80"/>
+        <Button x:Name="btnFF" Content="Find" HorizontalAlignment="Left" Height="20" Margin="98,124,0,0" VerticalAlignment="Top" Width="40" Click="BtnVS_Click"/>
+        <Label Content="ImageSeq" HorizontalAlignment="Left" Height="29" Margin="10,165,0,0" VerticalAlignment="Top" Width="69"/>
+        <TextBox x:Name="txtIQ" HorizontalAlignment="Left" Height="20" Margin="10,199,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="80"/>
+        <Button x:Name="btnIQ" Content="Find" HorizontalAlignment="Left" Height="20" Margin="98,199,0,0" VerticalAlignment="Top" Width="40" Click="BtnVS_Click"/>
+        <Button Content="Save" HorizontalAlignment="Left" Height="23" Margin="154,256,0,0" VerticalAlignment="Top" Width="48" Click="Button_Click"/>
+
+    </Grid>
+</Window>
