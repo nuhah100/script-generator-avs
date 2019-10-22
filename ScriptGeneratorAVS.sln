@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptGeneratorAVS", "ScriptGeneratorAVS\ScriptGeneratorAVS.csproj", "{93388D77-ED12-47AD-B380-E1AC1D877799}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93388D77-ED12-47AD-B380-E1AC1D877799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93388D77-ED12-47AD-B380-E1AC1D877799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93388D77-ED12-47AD-B380-E1AC1D877799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93388D77-ED12-47AD-B380-E1AC1D877799}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4131959E-C950-476D-AFE9-55AD3604DEA4}
+	EndGlobalSection
+EndGlobal
