@@ -29,10 +29,12 @@ namespace ScriptGeneratorAVS
 
         private void BtnVS_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog f = new OpenFileDialog();
-            f.Filter = " Dynamic-Link Library (*.dll)|*.dll|All files (*.*)|*.*";
-            f.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            f.Multiselect = false;
+            OpenFileDialog f = new OpenFileDialog
+            {
+                Filter = " Dynamic-Link Library (*.dll)|*.dll|All files (*.*)|*.*",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Multiselect = false
+            };
 
             if (f.ShowDialog() == true)
             {
