@@ -169,5 +169,10 @@ namespace ScriptGeneratorAVS
                 sw.Close();
             }
         }
+
+        private void Window_Closed(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
     }
 }
