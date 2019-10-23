@@ -53,7 +53,7 @@ namespace ScriptGeneratorAVS
             {
                 txtVideoUrl.Text = System.IO.Path.GetFileName(f.FileName);
                 Builder.SetMainVideo(f.FileName);
-                Console.WriteLine(System.IO.Path.GetExtension(f.FileName));
+
             }
 
         }
@@ -78,22 +78,7 @@ namespace ScriptGeneratorAVS
 
         }
 
-        private void BtnBuild_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog f = new SaveFileDialog();
-            f.Filter = "AVS Files (*.avs)| *.avs";
-            f.DefaultExt = "avs";
-            bool? result = f.ShowDialog();
-            if (result == true)
-            {
-                System.IO.Stream fileStream = f.OpenFile();
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
-                sw.WriteLine(Builder.Build());
-                sw.Flush();
-                sw.Close();
-            }
-            Console.WriteLine("Succes!!!");
-        }
+
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -138,7 +123,6 @@ namespace ScriptGeneratorAVS
         private void btnRemoveSubs_Click(object sender, RoutedEventArgs e)
         {
             int n = lbSubs.SelectedIndex;
-            Console.WriteLine(n);
             if (n == -1)
                 return;
             lbSubs.Items.RemoveAt(n);
@@ -149,7 +133,6 @@ namespace ScriptGeneratorAVS
         {
             bool b = cbSound.IsChecked.Value;
             Builder.SetSound(b);
-            Console.WriteLine(Builder.GetSound());
         }
 
         private void btnEffectRemove_Click(object sender, RoutedEventArgs e)
@@ -162,6 +145,23 @@ namespace ScriptGeneratorAVS
         {
             Builder.RemoveEffects();
             lbEffects.Items.Clear();
+        }
+
+
+        private void BtnBuild_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog f = new SaveFileDialog();
+            f.Filter = "AVS Files (*.avs)| *.avs";
+            f.DefaultExt = "avs";
+            bool? result = f.ShowDialog();
+            if (result == true)
+            {
+                System.IO.Stream fileStream = f.OpenFile();
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
+                sw.WriteLine(Builder.Build());
+                sw.Flush();
+                sw.Close();
+            }
         }
     }
 }
