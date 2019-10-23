@@ -35,7 +35,7 @@ namespace ScriptGeneratorAVS
             }
             else
             {
-                MessageBox.Show("You must first set all the dll files.", "Warning");
+                MessageBox.Show("You must first set all the dll files.", "Warning",MessageBoxButton.OK,MessageBoxImage.Information);
                 dl.Show();
             }
             Builder.SetSound(false);
@@ -150,6 +150,12 @@ namespace ScriptGeneratorAVS
 
         private void BtnBuild_Click(object sender, RoutedEventArgs e)
         {
+            if(txtVideoUrl.Text =="" || txtVideoUrl.Text == null)
+            {
+                MessageBox.Show("You Must Set a Video!","Warning", MessageBoxButton.OK,MessageBoxImage.Error);
+                return;
+            }
+
             SaveFileDialog f = new SaveFileDialog();
             f.Filter = "AVS Files (*.avs)| *.avs";
             f.DefaultExt = "avs";
