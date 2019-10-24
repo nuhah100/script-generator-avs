@@ -85,20 +85,21 @@ namespace ScriptGeneratorAVS.Classes
             s.Append("Source = Last\n");
             string Fn,Ef;
             string[] z;
-            foreach (var t in Effects)
+            for(int i = 0;i < Effects.Count;i++)
             {
+                string t = Effects[i];
                 Fn = Path.GetFileNameWithoutExtension(t);
                 z = Fn.Split(new char[] {'-','|'});
                 if (Path.GetExtension(t) == ".avi")
-                    Ef = "Ef = AVISource(" + t + ")\n";
+                    Ef = "Ef"+i+" = AVISource(" +qu+ t +qu+ ")\n";
                 else
                     if (Path.GetExtension(t) == ".png")
-                    Ef = "Ef = ImageReader(" + qu + t + qu + ",pixel_type="+qu+"RGB32"+qu+"))\n";
+                    Ef = "Ef"+i+" = ImageReader(" + qu + t + qu + ",pixel_type="+qu+"RGB32"+qu+")\n";
                 else
                     throw new System.InvalidOperationException("The File Type Isnt As Requsted.");
                 s.Append(Ef);
-                s.Append("Over = Overlay(Source.trim(" + z[0] + ", " + z[1] + "), mask=Ef.showAlpha(pixel_type=" + qu + "RGB32" + qu + "),Ef)\n");
-                s.Append("Source = Source.trim(0, "+z[0]+"-1"+") + Over + Source.trim("+z[1]+"+1,0)\n");
+                s.Append("Over"+i+" = Overlay(Source.trim(" + z[0] + ", " + z[1] + "), mask=Ef"+i+".showAlpha(pixel_type=" + qu + "RGB32" + qu + "),Ef"+i+")\n");
+                s.Append("Source = Source.trim(0, "+z[0]+"-1"+") + Over"+i+" + Source.trim("+z[1]+"+1,0)\n");
             }
 
             foreach (var q in Subtitles)

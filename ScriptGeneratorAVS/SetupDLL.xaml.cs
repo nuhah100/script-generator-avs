@@ -64,7 +64,7 @@ namespace ScriptGeneratorAVS
         {
             if(txtFF.Text == "" || txtIQ.Text == ""||txtVS.Text =="")
             {
-                MessageBox.Show("You didnt fill all the parts", "Notification");
+                MessageBox.Show("You didnt fill all the fields.", "Notification",MessageBoxButton.OK,MessageBoxImage.Information);
                 return;
             }
             string s = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -73,6 +73,12 @@ namespace ScriptGeneratorAVS
             File.WriteAllText(s+@"/"+name,txtFF.Text + "\n"+txtIQ.Text+"\n"+txtVS.Text+"\n");
             this.Close();
             
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(txtFF.Text == ""|| txtIQ.Text == ""||txtVS.Text =="")
+                System.Windows.Application.Current.Shutdown();
         }
     }
 }

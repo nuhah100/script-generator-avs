@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -15,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
+using static System.IO.Path;
 
 namespace ScriptGeneratorAVS
 {
@@ -45,17 +48,17 @@ namespace ScriptGeneratorAVS
             OpenFileDialog f = new OpenFileDialog
             {
                 Filter = " Matroska Multimedia Container (*.mkv)|*.mkv|All files (*.*)|*.*",//
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                InitialDirectory = Paths.LastPathUse,
                 Multiselect = false
             };
 
             if (f.ShowDialog() == true)
             {
-                txtVideoUrl.Text = System.IO.Path.GetFileName(f.FileName);
+                Paths.LastPathUse = GetDirectoryName(f.FileName);
+                txtVideoUrl.Text = GetFileName(f.FileName);
                 Builder.SetMainVideo(f.FileName);
 
             }
-
         }
 
         private void BtnFindSubs_Click(object sender, RoutedEventArgs e)
@@ -64,11 +67,12 @@ namespace ScriptGeneratorAVS
             {
                 Multiselect = true,
                 Filter = " Aegisub Advanced Subtitle (*.ass)|*.ass|All files (*.*)|*.*",//Aegisub Advanced Subtitle
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                InitialDirectory = Paths.LastPathUse
             };
 
             if (f.ShowDialog() == true)
             {
+                Paths.LastPathUse = GetDirectoryName(f.FileNames[0]);
                 foreach (string filename in f.FileNames)
                 {
                     lbSubs.Items.Add(System.IO.Path.GetFileName(filename));
@@ -101,11 +105,12 @@ namespace ScriptGeneratorAVS
             {
                 Multiselect = true,
                 Filter = " Portable Network Graphics Audio Video Interleave (*.png;*avi)|*.png;*.avi|All files (*.*)|*.*",//Aegisub Advanced Subtitle
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                InitialDirectory = Paths.LastPathUse
             };
 
             if (f.ShowDialog() == true)
             {
+                Paths.LastPathUse = GetDirectoryName(f.FileNames[0]);
                 foreach (string filename in f.FileNames)
                 {
                     lbEffects.Items.Add(System.IO.Path.GetFileName(filename));
@@ -159,6 +164,7 @@ namespace ScriptGeneratorAVS
             SaveFileDialog f = new SaveFileDialog();
             f.Filter = "AVS Files (*.avs)| *.avs";
             f.DefaultExt = "avs";
+            f.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             bool? result = f.ShowDialog();
             if (result == true)
             {
