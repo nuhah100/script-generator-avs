@@ -38,7 +38,7 @@ namespace ScriptGeneratorAVS
             }
             else
             {
-                MessageBox.Show("You must first set all the dll files.", "Warning",MessageBoxButton.OK,MessageBoxImage.Information);
+                MessageBox.Show("You must first set all the dll files.", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
                 dl.Show();
             }
             Builder.SetSound(false);
@@ -155,9 +155,9 @@ namespace ScriptGeneratorAVS
 
         private void BtnBuild_Click(object sender, RoutedEventArgs e)
         {
-            if(txtVideoUrl.Text =="" || txtVideoUrl.Text == null)
+            if (txtVideoUrl.Text == "" || txtVideoUrl.Text == null)
             {
-                MessageBox.Show("You Must Set a Video!","Warning", MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("You Must Set a Video!", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -180,5 +180,11 @@ namespace ScriptGeneratorAVS
         {
             System.Windows.Application.Current.Shutdown();
         }
+
+        private void RichTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
     }
 }

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScriptGeneratorAVS"
         mc:Ignorable="d"
-        Title="AVS Script Generator" Height="500" Width="800" Closed="Window_Closed" Closing="Window_Closed" Icon="Classes/179-1799637_b-g-n3r-icon-boku-no-hero-academia.png" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FFB9B9B9">
+        Title="AVS Script Generator" Height="544" Width="799" Closed="Window_Closed" Closing="Window_Closed" Icon="Classes/179-1799637_b-g-n3r-icon-boku-no-hero-academia.png" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
     <Grid>
-        <DockPanel>
+        <!--<DockPanel>
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_Tools">
                     <MenuItem Header="_SetupDLL" Click="MenuItem_Click" />
@@ -16,25 +16,39 @@
                 </MenuItem>
             </Menu>
             <TextBox AcceptsReturn="True" />
-        </DockPanel>
-        <Grid>
-            <TextBox x:Name="txtVideoUrl" HorizontalAlignment="Left" Height="39" Margin="39,152,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="212" Focusable="False"/>
-            <Label Content="Video" HorizontalAlignment="Left" Height="33" Margin="34,119,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
-            <Button x:Name="btnFindVideo" Content="Find" HorizontalAlignment="Left" Height="23" Margin="256,152,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="BtnFindVideo_Click"/>
-            <Label x:Name="lblSubs" Content="Subtitles" HorizontalAlignment="Left" Height="33" Margin="34,214,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
-            <Button x:Name="btnFindSubs" Content="+" HorizontalAlignment="Left" Height="18" Margin="256,252,0,0" VerticalAlignment="Top" Width="19" RenderTransformOrigin="0.768,0.507" Click="BtnFindSubs_Click"/>
-            <ListBox x:Name="lbSubs" HorizontalAlignment="Left" Height="74" Margin="39,252,0,0" VerticalAlignment="Top" Width="212"/>
-            <Button x:Name="btnBuild" Content="Build" HorizontalAlignment="Left" Margin="716,428,0,0" VerticalAlignment="Top" Width="66" Height="31" Click="BtnBuild_Click"/>
-            <Label x:Name="lblEffects" Content="Effects" HorizontalAlignment="Left" Height="33" Margin="457,114,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
-            <Button x:Name="btnEffects" Content="+" HorizontalAlignment="Left" Height="23" Margin="679,154,0,0" VerticalAlignment="Top" Width="26" RenderTransformOrigin="0.768,0.507" Click="btnEffects_Click"/>
-            <ListBox x:Name="lbEffects" HorizontalAlignment="Left" Height="158" Margin="462,152,0,0" VerticalAlignment="Top" Width="212"/>
-            <Button x:Name="btnRemoveSubs" Content="-" HorizontalAlignment="Left" Height="19" Margin="256,275,0,0" VerticalAlignment="Top" Width="19" RenderTransformOrigin="0.768,0.507" Click="btnRemoveSubs_Click"/>
-            <Button x:Name="btnClearSubs" Content="Clear" HorizontalAlignment="Left" Height="23" Margin="256,299,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="btnClearSubs_Click"/>
-            <CheckBox x:Name="cbSound" Content="Sound" HorizontalAlignment="Left" Height="18" Margin="39,196,0,0" VerticalAlignment="Top" Width="74" Click="cbSound_Click" RenderTransformOrigin="0.5,2.556"/>
-            <Button x:Name="btnEffectRemove" Content="-" HorizontalAlignment="Left" Height="23" Margin="679,182,0,0" VerticalAlignment="Top" Width="26" RenderTransformOrigin="0.768,0.507" Click="btnEffectRemove_Click" />
-            <Button x:Name="btnEffectsClear" Content="Clear" HorizontalAlignment="Left" Height="23" Margin="679,214,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="btnEffectsClear_Click" />
+        </DockPanel>Margin="0,19,0,0"-->
+        <TabControl  Width="793" Padding="2">
+            <TabItem Header="General" IsSelected="True" Width="59" Margin="0,0,0,1">
+                <Grid>
+                    <TextBox x:Name="txtVideoUrl" HorizontalAlignment="Left" Height="39" Margin="39,124,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="212" Focusable="False"/>
+                    <Label Content="Video" HorizontalAlignment="Left" Height="33" Margin="34,91,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
+                    <Button x:Name="btnFindVideo" Content="Find" HorizontalAlignment="Left" Height="23" Margin="256,124,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="BtnFindVideo_Click"/>
+                    <Label x:Name="lblSubs" Content="Subtitles" HorizontalAlignment="Left" Height="33" Margin="34,202,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
+                    <Button x:Name="btnFindSubs" Content="+" HorizontalAlignment="Left" Height="18" Margin="256,240,0,0" VerticalAlignment="Top" Width="19" RenderTransformOrigin="0.768,0.507" Click="BtnFindSubs_Click"/>
+                    <ListBox x:Name="lbSubs" HorizontalAlignment="Left" Height="74" Margin="39,240,0,0" VerticalAlignment="Top" Width="212"/>
+                    <Button x:Name="btnBuild" Content="Build" HorizontalAlignment="Left" Margin="679,407,0,0" VerticalAlignment="Top" Width="66" Height="31" Click="BtnBuild_Click"/>
+                    <Label x:Name="lblEffects" Content="Effects" HorizontalAlignment="Left" Height="33" Margin="457,85,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
+                    <Button x:Name="btnEffects" Content="+" HorizontalAlignment="Left" Height="23" Margin="679,125,0,0" VerticalAlignment="Top" Width="26" RenderTransformOrigin="0.768,0.507" Click="btnEffects_Click"/>
+                    <ListBox x:Name="lbEffects" HorizontalAlignment="Left" Height="158" Margin="462,123,0,0" VerticalAlignment="Top" Width="212"/>
+                    <Button x:Name="btnRemoveSubs" Content="-" HorizontalAlignment="Left" Height="19" Margin="256,263,0,0" VerticalAlignment="Top" Width="19" RenderTransformOrigin="0.768,0.507" Click="btnRemoveSubs_Click"/>
+                    <Button x:Name="btnClearSubs" Content="Clear" HorizontalAlignment="Left" Height="23" Margin="256,287,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="btnClearSubs_Click"/>
+                    <CheckBox x:Name="cbSound" Content="Sound" HorizontalAlignment="Left" Height="18" Margin="39,170,0,0" VerticalAlignment="Top" Width="74" Click="cbSound_Click" RenderTransformOrigin="0.5,2.556"/>
+                    <Button x:Name="btnEffectRemove" Content="-" HorizontalAlignment="Left" Height="23" Margin="679,153,0,0" VerticalAlignment="Top" Width="26" RenderTransformOrigin="0.768,0.507" Click="btnEffectRemove_Click" />
+                    <Button x:Name="btnEffectsClear" Content="Clear" HorizontalAlignment="Left" Height="23" Margin="679,185,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="btnEffectsClear_Click" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Advance" Margin="-2,0">
+                <RichTextBox Margin="20,21,565,36" Block.LineHeight="2">
+                    <FlowDocument>
+                        <Paragraph>
+                            <Run></Run>
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
+            </TabItem>
 
 
-        </Grid>
+
+        </TabControl>
     </Grid>
 </Window>
