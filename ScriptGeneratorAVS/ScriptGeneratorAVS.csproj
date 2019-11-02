@@ -65,15 +65,38 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ffme.win, Version=4.1.310.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FFME.Windows.4.1.310\lib\net472\ffme.win.dll</HintPath>
+    </Reference>
+    <Reference Include="FFmpeg.AutoGen, Version=4.1.0.5, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
+      <HintPath>..\packages\FFmpeg.AutoGen.4.1.0.5\lib\net45\FFmpeg.AutoGen.dll</HintPath>
+    </Reference>
+    <Reference Include="FFMpegCore, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FFMpegCore.1.0.11\lib\netstandard2.0\FFMpegCore.dll</HintPath>
+    </Reference>
     <Reference Include="Google.Protobuf, Version=3.10.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.10.0\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.5.1\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -89,6 +112,7 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -107,7 +131,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\FilterComplex.cs" />
+    <Compile Include="Classes\LogArgument.cs" />
     <Compile Include="Classes\Paths.cs" />
+    <Compile Include="Classes\SubArgument.cs" />
+    <Compile Include="Classes\TrimArgument.cs" />
     <Compile Include="SetupDLL.xaml.cs">
       <DependentUpon>SetupDLL.xaml</DependentUpon>
     </Compile>
@@ -147,6 +175,53 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="FFMPEG\bin\presets\ffprobe.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="FFMPEG\bin\presets\libvpx-1080p.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libvpx-1080p50_60.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libvpx-360p.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libvpx-720p.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libvpx-720p50_60.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libvpx-ultrafast.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-baseline.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-fast.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-faster.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-faster_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-fast_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-ipod320.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-ipod640.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-lossless_fast.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-lossless_max.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-lossless_medium.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-lossless_slow.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-lossless_slower.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-lossless_ultrafast.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-main.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-medium.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-medium_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-placebo.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-placebo_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-slow.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-slower.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-slower_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-slow_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-superfast.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-superfast_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-ultrafast.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-ultrafast_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-veryfast.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-veryfast_firstpass.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-veryslow.ffpreset" />
+    <None Include="FFMPEG\bin\presets\libx264-veryslow_firstpass.ffpreset" />
+    <None Include="FFMPEG\presets\ffprobe.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="FFMPEG\presets\libvpx-1080p.ffpreset" />
+    <None Include="FFMPEG\presets\libvpx-1080p50_60.ffpreset" />
+    <None Include="FFMPEG\presets\libvpx-360p.ffpreset" />
+    <None Include="FFMPEG\presets\libvpx-720p.ffpreset" />
+    <None Include="FFMPEG\presets\libvpx-720p50_60.ffpreset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -171,6 +246,46 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Classes\179-1799637_b-g-n3r-icon-boku-no-hero-academia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FFMPEG\bin\ffmpeg.exe" />
+    <Content Include="FFMPEG\bin\ffplay.exe" />
+    <Content Include="FFMPEG\bin\ffprobe.exe" />
+    <Content Include="FFMPEG\doc\bootstrap.min.css" />
+    <Content Include="FFMPEG\doc\default.css" />
+    <Content Include="FFMPEG\doc\developer.html" />
+    <Content Include="FFMPEG\doc\faq.html" />
+    <Content Include="FFMPEG\doc\fate.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-all.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-bitstream-filters.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-codecs.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-devices.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-filters.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-formats.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-protocols.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-resampler.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-scaler.html" />
+    <Content Include="FFMPEG\doc\ffmpeg-utils.html" />
+    <Content Include="FFMPEG\doc\ffmpeg.html" />
+    <Content Include="FFMPEG\doc\ffplay-all.html" />
+    <Content Include="FFMPEG\doc\ffplay.html" />
+    <Content Include="FFMPEG\doc\ffprobe-all.html" />
+    <Content Include="FFMPEG\doc\ffprobe.html" />
+    <Content Include="FFMPEG\doc\general.html" />
+    <Content Include="FFMPEG\doc\git-howto.html" />
+    <Content Include="FFMPEG\doc\libavcodec.html" />
+    <Content Include="FFMPEG\doc\libavdevice.html" />
+    <Content Include="FFMPEG\doc\libavfilter.html" />
+    <Content Include="FFMPEG\doc\libavformat.html" />
+    <Content Include="FFMPEG\doc\libavutil.html" />
+    <Content Include="FFMPEG\doc\libswresample.html" />
+    <Content Include="FFMPEG\doc\libswscale.html" />
+    <Content Include="FFMPEG\doc\mailing-list-faq.html" />
+    <Content Include="FFMPEG\doc\nut.html" />
+    <Content Include="FFMPEG\doc\platform.html" />
+    <Content Include="FFMPEG\doc\style.min.css" />
+    <Resource Include="FFMPEG\LICENSE.txt" />
+    <Resource Include="FFMPEG\README.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
