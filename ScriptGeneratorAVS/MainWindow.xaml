@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ScriptGeneratorAVS"
-        xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
         mc:Ignorable="d"
-        Title="AVS Script Generator" Height="544" Width="799" Closed="Window_Closed" Closing="Window_Closed" Icon="Classes/179-1799637_b-g-n3r-icon-boku-no-hero-academia.png" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
+        Title="AVS Script Generator" Height="544" Width="799" Closed="Window_Closed" Closing="Window_Closed" Icon="Icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
     <Grid>
         <!--<DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -48,9 +46,9 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Button x:Name="btnPre" Content="Encode" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="684,438,0,0" VerticalAlignment="Top" Width="52" Click="btnPre_Click"/>
-                    <MediaElement x:Name="mpVideo" LoadedBehavior="Manual" HorizontalAlignment="Left" Height="379" Margin="10,10,0,0" VerticalAlignment="Top" Width="767" RenderTransformOrigin="0.5,0.5" Grid.Column="1" MediaOpened="mpVideo_MediaOpened" />
+                    <MediaElement x:Name="mpVideo" LoadedBehavior="Manual" HorizontalAlignment="Left" Height="364" Margin="46,10,0,0" VerticalAlignment="Top" Width="660" RenderTransformOrigin="0.5,0.5" Grid.Column="1" MediaOpened="mpVideo_MediaOpened" />
                     <Button x:Name="btnStopEncode" Content="Stop" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="627,438,0,0" VerticalAlignment="Top" Width="52" Click="btnStopEncode_Click"/>
-                    <Slider x:Name="slVideo" Thumb.DragStarted="slVideo_DragStarted" Thumb.DragCompleted="slVideo_DragCompleted" Grid.Column="1" HorizontalAlignment="Left" Margin="11,404,0,0" VerticalAlignment="Top" Height="19" Width="765" RenderTransformOrigin="0.5,0.5" ValueChanged="slVideo_ValueChanged">
+                    <Slider x:Name="slVideo" Thumb.DragStarted="slVideo_DragStarted" Thumb.DragCompleted="slVideo_DragCompleted" Grid.Column="1" HorizontalAlignment="Left" Margin="57,379,0,0" VerticalAlignment="Top" Height="19" Width="641" RenderTransformOrigin="0.5,0.5" ValueChanged="slVideo_ValueChanged">
                         <Slider.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -60,9 +58,9 @@
                             </TransformGroup>
                         </Slider.RenderTransform>
                     </Slider>
-                    <Button x:Name="btnPlay" Content="Play/Pause" Grid.Column="1" HorizontalAlignment="Left" Height="27" Margin="26,423,0,0" VerticalAlignment="Top" Width="74" Click="btnPlay_Click"/>
-                    <Label x:Name="lblVideoInfo" Content=" " Grid.Column="1" Margin="105,424,488,11"/>
-                    <ProgressBar x:Name="prbPro" Grid.Column="1" Margin="26,457,560,5"/>
+                    <Button x:Name="btnPlay" Content="Play/Pause" Grid.Column="1" HorizontalAlignment="Left" Height="27" Margin="62,402,0,0" VerticalAlignment="Top" Width="74" Click="btnPlay_Click"/>
+                    <Label x:Name="lblVideoInfo" Content=" " Grid.Column="1" Margin="136,405,457,30"/>
+                    <ProgressBar x:Name="prbPro" Grid.Column="1" Margin="62,434,524,28"/>
 
                 </Grid>
             </TabItem>

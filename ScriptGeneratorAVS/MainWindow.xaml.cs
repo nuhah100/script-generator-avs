@@ -24,6 +24,7 @@ using FFMpegCore.Enums;
 using FFMpegCore.FFMPEG.Enums;
 using FFMpegCore.FFMPEG.Argument;
 using System.Timers;
+using System.Diagnostics;
 
 namespace ScriptGeneratorAVS
 {
@@ -38,7 +39,7 @@ namespace ScriptGeneratorAVS
         System.Windows.Threading.DispatcherTimer tt =  new System.Windows.Threading.DispatcherTimer();
         private bool mediaPlayerIsPlaying = false;
         private bool userIsDraggingSlider = false;
-        string a,AvsFilePath = null;
+        string a,V;
         ArgumentContainer container = new ArgumentContainer();
         public MainWindow()
         {
@@ -247,7 +248,7 @@ namespace ScriptGeneratorAVS
             container.Add(new FilterComplex(InputData()));
             container.Add(new OutputArgument(new Uri(s.FileName)));
             container.Add(new OverrideArgument());
-
+            V = s.FileName;
             Task t = Task.Run(() => {
                 encoder.Convert(container);
             });
@@ -300,7 +301,7 @@ namespace ScriptGeneratorAVS
                 }
                 if (container.Contains<TrimArgument>())
                 {
-                    TimeSpan rq = new TimeSpan();
+                    
                 }
                 string ls = q.ToString();
                 if (ls == null || ls == "")
@@ -318,7 +319,8 @@ namespace ScriptGeneratorAVS
                 {
                     tt.Stop();
                     encoder.Kill();
-                    mpVideo.Source = new Uri(Path.GetDirectoryName(Builder.GetMainVideo()) + @"\gt.mp4");
+                    mpVideo.Source = new Uri(V);
+                    Process.Start(Path.GetDirectoryName(V));
                     d = 100;
                     File.Delete(Path.GetTempPath() + @"log" + a + ".txt");
                 }

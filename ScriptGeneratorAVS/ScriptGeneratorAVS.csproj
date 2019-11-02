@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -64,13 +64,10 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ffme.win, Version=4.1.310.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FFME.Windows.4.1.310\lib\net472\ffme.win.dll</HintPath>
-    </Reference>
-    <Reference Include="FFmpeg.AutoGen, Version=4.1.0.5, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
-      <HintPath>..\packages\FFmpeg.AutoGen.4.1.0.5\lib\net45\FFmpeg.AutoGen.dll</HintPath>
-    </Reference>
     <Reference Include="FFMpegCore, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FFMpegCore.1.0.11\lib\netstandard2.0\FFMpegCore.dll</HintPath>
     </Reference>
@@ -245,9 +242,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Classes\179-1799637_b-g-n3r-icon-boku-no-hero-academia.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="FFMPEG\bin\ffmpeg.exe" />
     <Content Include="FFMPEG\bin\ffplay.exe" />
     <Content Include="FFMPEG\bin\ffprobe.exe" />
@@ -284,8 +278,12 @@
     <Content Include="FFMPEG\doc\nut.html" />
     <Content Include="FFMPEG\doc\platform.html" />
     <Content Include="FFMPEG\doc\style.min.css" />
+    <Resource Include="Icon.ico" />
     <Resource Include="FFMPEG\LICENSE.txt" />
     <Resource Include="FFMPEG\README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
