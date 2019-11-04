@@ -14,6 +14,7 @@ namespace ScriptGeneratorAVS.Classes
         private static bool Sound;
         public static List<string> Subtitles = new List<string>();
         public static List<string> Plugins = new List<string>();
+        public static List<Tuple<string,string>> EffectsFrames = new List<Tuple<string, string>>();
         public static List<string> Effects = new List<string>();
         private static double videoFrames;
         public static double VideoFrameRate;
@@ -90,15 +91,14 @@ namespace ScriptGeneratorAVS.Classes
             else
                 s.Append("DirectShowSource(" + qu + MainVideo + qu + ")\n");
             s.Append("Source = Last\n");
-            string Fn,Ef;
+            string Ef;
             string[] z;
             for(int i = 0;i < Effects.Count;i++)
             {
                 string t = Effects[i];
-                Fn = Path.GetFileNameWithoutExtension(t);
-                z = Fn.Split(new char[] {'-','|'});
+                z = new string[] { EffectsFrames[i].Item1, EffectsFrames[i].Item2 };
                 if (Path.GetExtension(t) == ".avi")
-                    Ef = "Ef"+i+" = AVISource(" +qu+ t +qu+ ")\n";
+                    Ef = "Ef"+i+" = AVISource(" +qu+ t +qu+ ",pixel_type=" + qu + "RGB32" + qu+ ")\n";
                 else
                     if (Path.GetExtension(t) == ".png")
                     Ef = "Ef"+i+" = ImageReader(" + qu + t + qu + ",pixel_type="+qu+"RGB32"+qu+")\n";

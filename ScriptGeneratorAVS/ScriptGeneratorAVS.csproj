@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>G:\‏‏תיקיה חדשה\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -25,8 +25,9 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>0.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -132,10 +133,17 @@
     <Compile Include="Classes\LogArgument.cs" />
     <Compile Include="Classes\Paths.cs" />
     <Compile Include="Classes\SubArgument.cs" />
-    <Compile Include="Classes\TrimArgument.cs" />
-    <Compile Include="SetupDLL.xaml.cs">
+    <Compile Include="Classes\BestCodecArgument.cs" />
+    <Compile Include="Resources\Frames.xaml.cs">
+      <DependentUpon>Frames.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\SetupDLL.xaml.cs">
       <DependentUpon>SetupDLL.xaml</DependentUpon>
     </Compile>
+    <Page Include="Resources\Frames.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -149,7 +157,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SetupDLL.xaml">
+    <Page Include="Resources\SetupDLL.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -282,8 +290,6 @@
     <Resource Include="FFMPEG\LICENSE.txt" />
     <Resource Include="FFMPEG\README.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -35,16 +35,24 @@ namespace ScriptGeneratorAVS
     {
         SetUpDLL dl = new SetUpDLL();
         FFMpeg encoder;
-        System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
-        System.Windows.Threading.DispatcherTimer tt =  new System.Windows.Threading.DispatcherTimer();
-        private bool mediaPlayerIsPlaying = false;
-        private bool userIsDraggingSlider = false;
+        System.Windows.Threading.DispatcherTimer tt = new System.Windows.Threading.DispatcherTimer();
         string a,V;
-        ArgumentContainer container = new ArgumentContainer();
+        ArgumentContainer container = new ArgumentContainer();// FFMpegOptions.Configure(new FFMpegOptions { RootDirectory = @"C:\Users\moish\source\repos\ScriptGeneratorAVS\ScriptGeneratorAVS\FFMPEG\bin\" });
         public MainWindow()
         {
-            FFMpegOptions.Configure(new FFMpegOptions { RootDirectory = @"C:\Users\moish\source\repos\ScriptGeneratorAVS\ScriptGeneratorAVS\FFMPEG\bin\" });
-            encoder = new FFMpeg();
+            string y = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)));
+            try 
+            {
+                FFMpegOptions.Configure(new FFMpegOptions { RootDirectory = y +@"\FFMPEG\bin\" });
+                encoder = new FFMpeg();
+
+            }
+            catch(FFMpegCore.FFMPEG.Exceptions.FFMpegException)
+            {
+                FFMpegOptions.Configure(new FFMpegOptions { RootDirectory =Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\FFMPEG\bin\" });
+                encoder = new FFMpeg();
+            }
+            Console.WriteLine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\FFMPEG\bin\");
             InitializeComponent();
             if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName))
             {
@@ -57,10 +65,6 @@ namespace ScriptGeneratorAVS
                 dl.Show();
             }
             Builder.SetSound(false);
-            timer.Interval = TimeSpan.FromSeconds(0.5);
-            timer.Tick += timer_Tick;
-            //mpVideo.Source = new Uri(@"G:\Boku\[HorribleSubs] Boku no Hero Academia - 66 [1080p].mkv");
-            timer.Start();
         }
 
 
@@ -152,10 +156,32 @@ namespace ScriptGeneratorAVS
             if (f.ShowDialog() == true)
             {
                 Paths.LastPathUse = GetDirectoryName(f.FileNames[0]);
+                string FileNameNoPath;
                 foreach (string filename in f.FileNames)
                 {
-                    lbEffects.Items.Add(System.IO.Path.GetFileName(filename));
+                    FileNameNoPath = System.IO.Path.GetFileName(filename);
+                    lbEffects.Items.Add(FileNameNoPath);
                     Builder.AddEffect(filename);
+                    //Frames w = new Frames();
+                    FileNameNoPath = Path.GetFileNameWithoutExtension(FileNameNoPath);
+                    if(FileNameNoPath.IndexOf('_') != -1)
+                    {
+                        FileNameNoPath = FileNameNoPath.Split('_')[1];
+                    }
+                    if (FileNameNoPath.IndexOf("-") == -1)
+                    {
+                        Tuple<string, string> a;
+                        do
+                        {
+                            a = Frames.GetFrames(System.IO.Path.GetFileName(filename));
+                        }
+                        while (a == null);
+                        Builder.EffectsFrames.Add(a);
+                    }
+                    else
+                    {
+                        Builder.EffectsFrames.Add(new Tuple<string, string>(FileNameNoPath.Split('-')[0], FileNameNoPath.Split('-')[1]));
+                    }
                 }
             }
         }
@@ -184,6 +210,7 @@ namespace ScriptGeneratorAVS
         private void btnEffectRemove_Click(object sender, RoutedEventArgs e)
         {
             Builder.RemoveEffect(lbEffects.SelectedIndex);
+            Builder.EffectsFrames.RemoveAt(lbEffects.SelectedIndex);
             lbEffects.Items.RemoveAt(lbEffects.SelectedIndex);
         }
 
@@ -232,7 +259,7 @@ namespace ScriptGeneratorAVS
 
             SaveFileDialog s = new SaveFileDialog();
             s.Filter = "Video Files(*.mp4/*.mkv)|*.mp4;*.mkv";
-            s.DefaultExt = ".mkv";
+            s.DefaultExt = '.'+cbFormat.Text.ToLower();
             if(s.ShowDialog() == false)
             {
                 MessageBox.Show("You must choose a path.","Error",MessageBoxButton.OK,MessageBoxImage.Error);
@@ -240,12 +267,89 @@ namespace ScriptGeneratorAVS
             }
 
             container.Add(new InputArgument(Path.GetTempPath() + "Script" + a + ".avs"));
-            //container.Add(new SubArgument(new Uri(Builder.Subtitles[0]).AbsolutePath));
-            //container.Add(new VideoCodecArgument(VideoCodec.LibX264));
-            //container.Add(new TrimArgument(" 00:02:20", " 00:00:30"));
             container.Add(new ThreadsArgument(true));
             container.Add(new LogArgument(Path.GetTempPath() + @"log"+a+".txt"));
             container.Add(new FilterComplex(InputData()));
+            string u = cbEncoder.Text.ToLower();
+            switch(u)
+            {
+                case "libx264":
+                    {
+                        container.Add(new VideoCodecArgument(VideoCodec.LibX264));
+                        break;
+                    }
+                case "libx265":
+                    {
+                        container.Add(new BestCodecArgument());
+                        break;
+                    }
+            }
+            u = cbSpeed.Text.Replace(" ","");
+            SpeedArgument sa = new SpeedArgument();
+            switch(u)
+            {
+                case "VerySlow":
+                    {
+                        sa.Value = Speed.VerySlow;
+                        break;
+                    }
+                case "Slower":
+                    {
+                        sa.Value = Speed.Slower;
+                        break;
+                    }
+                case "Slow":
+                    {
+                        sa.Value = Speed.Slow;
+                        break;
+                    }
+                case "Medium":
+                    {
+                        sa.Value = Speed.Medium;
+                        break;
+                    }
+                case "Fast":
+                    {
+                        sa.Value = Speed.Fast;
+                        break;
+                    }
+                case "Faster":
+                    {
+                        sa.Value = Speed.Faster;
+                        break;
+                    }
+                case "VeryFast":
+                    {
+                        sa.Value = Speed.VeryFast;
+                        break;
+                    }
+                case "SuperFast":
+                    {
+                        sa.Value = Speed.SuperFast;
+                        break;
+                    }
+                case "UltraFast":
+                    {
+                        sa.Value = Speed.UltraFast;
+                        break;
+                    }
+            }
+            container.Add(sa);
+            AudioCodecArgument au = new AudioCodecArgument();
+            switch(cbAudioCodec.Text.Replace(" ","").ToLower())
+            {
+                case "aac":
+                    {
+                        au.Value = AudioCodec.Aac;
+                        break;
+                    }
+                default:
+                    {
+                        au.Value = AudioCodec.LibVorbis;
+                        break;
+                    }
+            }
+            container.Add(au);
             container.Add(new OutputArgument(new Uri(s.FileName)));
             container.Add(new OverrideArgument());
             V = s.FileName;
@@ -299,7 +403,7 @@ namespace ScriptGeneratorAVS
                         q.Append(line + "\n");
                     }
                 }
-                if (container.Contains<TrimArgument>())
+                if (container.Contains<BestCodecArgument>())
                 {
                     
                 }
@@ -315,14 +419,17 @@ namespace ScriptGeneratorAVS
                 }
                 double d = (100 * double.Parse(ss[0].Split('=')[1].ToString())) / Builder.VideoFrames;
                 d = Math.Round(d * 10000) / 10000d;
+                if (d > 100)
+                    d = 99.999;
                 if (ss[11].Split('=')[1] == "end")
                 {
                     tt.Stop();
                     encoder.Kill();
-                    mpVideo.Source = new Uri(V);
-                    Process.Start(Path.GetDirectoryName(V));
+                    //Process.Start(Path.GetDirectoryName(V));
+                    Process.Start("explorer.exe", "/select," + V + @"\");
                     d = 100;
                     File.Delete(Path.GetTempPath() + @"log" + a + ".txt");
+                    File.Delete(Path.GetTempPath() + "Script" + a + ".avs");
                 }
                 lblVideoInfo.Content = d + "%";
                 prbPro.Value = d;
@@ -335,46 +442,5 @@ namespace ScriptGeneratorAVS
             encoder.Kill();
         }
 
-        private void mpVideo_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            //mediaPlayerIsPlaying = true;
-            timer.Start();
-        }
-
-        private void slVideo_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            
-            
-        }
-
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            if (mediaPlayerIsPlaying)
-                mpVideo.Play();
-            else
-                mpVideo.Pause();
-            if ((mpVideo.Source != null) && (mpVideo.NaturalDuration.HasTimeSpan) && (!userIsDraggingSlider))
-            {
-                slVideo.Minimum = 0;
-                slVideo.Maximum = mpVideo.NaturalDuration.TimeSpan.TotalSeconds;
-                slVideo.Value = mpVideo.Position.TotalSeconds;
-            }
-        }
-
-        private void slVideo_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
-        {
-            userIsDraggingSlider = true;
-        }
-
-        private void slVideo_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
-        {
-            userIsDraggingSlider = false;
-            mpVideo.Position = TimeSpan.FromSeconds(slVideo.Value);
-        }
-
-        private void btnPlay_Click(object sender, RoutedEventArgs e)
-        {
-            mediaPlayerIsPlaying = !mediaPlayerIsPlaying;
-        }
     }
 }

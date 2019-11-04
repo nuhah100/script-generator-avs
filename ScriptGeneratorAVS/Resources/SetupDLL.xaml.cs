@@ -77,8 +77,7 @@ namespace ScriptGeneratorAVS
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(txtFF.Text == ""|| txtIQ.Text == ""||txtVS.Text =="")
-                System.Windows.Application.Current.Shutdown();
+            
         }
     }
 }

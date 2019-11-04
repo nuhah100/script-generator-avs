@@ -21,8 +21,8 @@ namespace ScriptGeneratorAVS.Classes
         {
             char c = '"';
             StringBuilder s = new StringBuilder();
-            //if (Value.Count == 0)
-            //    return string.Empty;
+            if (Value.Count == 0)
+               return string.Empty;
             foreach (var a in Value)
             {
                 s.Append(a);

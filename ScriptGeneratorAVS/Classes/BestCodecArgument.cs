@@ -10,21 +10,17 @@ using FFMpegCore.FFMPEG.Argument;
 
 namespace ScriptGeneratorAVS.Classes
 {
-    class TrimArgument : Argument<string, string>
+    class BestCodecArgument : Argument
     {
-        public TrimArgument()
+        public BestCodecArgument()
         {
 
         }
 
-        public TrimArgument(string first, string second) : base(first, second)
-        {
-
-        }
 
         public override string GetStringValue()
         {
-            return " -ss "+First+ " -t "+Second ;
+            return "-c:v libx265";
         }
     }
 }

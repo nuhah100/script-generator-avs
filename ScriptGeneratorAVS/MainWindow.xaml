@@ -4,20 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="AVS Script Generator" Height="544" Width="799" Closed="Window_Closed" Closing="Window_Closed" Icon="Icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
+        Title="AVS Script Generator" Height="590" Width="800" Closed="Window_Closed" Closing="Window_Closed" Icon="Icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
+    <Window.Effect>
+        <DropShadowEffect/>
+    </Window.Effect>
     <Grid>
-        <!--<DockPanel>
+        <DockPanel>
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_Tools">
+                <MenuItem Header="_Tools" Height="24" Width="42">
                     <MenuItem Header="_SetupDLL" Click="MenuItem_Click" />
                     <Separator />
                     <MenuItem Header="_Exit" Click="Window_Closed" />
                 </MenuItem>
             </Menu>
-            <TextBox AcceptsReturn="True" />
-        </DockPanel>Margin="0,19,0,0"-->
-        <TabControl  Width="793" Padding="2">
-            <TabItem Header="General" IsSelected="True" Width="59" Margin="0,0,0,1">
+            <TextBox AcceptsReturn="True" IsEnabled="False" />
+        </DockPanel>
+        <TabControl Margin="0,24,-11,-14">
+            <TabItem Margin="-2,-2,-17,-4" Header="General">
                 <Grid>
                     <TextBox x:Name="txtVideoUrl" HorizontalAlignment="Left" Height="39" Margin="39,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="212" Focusable="False"/>
                     <Label Content="Video" HorizontalAlignment="Left" Height="33" Margin="34,32,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
@@ -25,50 +28,57 @@
                     <Label x:Name="lblSubs" Content="Subtitles" HorizontalAlignment="Left" Height="33" Margin="457,60,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
                     <Button x:Name="btnFindSubs" Content="+" HorizontalAlignment="Left" Height="18" Margin="679,98,0,0" VerticalAlignment="Top" Width="19" RenderTransformOrigin="0.768,0.507" Click="BtnFindSubs_Click"/>
                     <ListBox x:Name="lbSubs" HorizontalAlignment="Left" Height="74" Margin="462,98,0,0" VerticalAlignment="Top" Width="212"/>
-                    <Button x:Name="btnBuild" Content="Build" HorizontalAlignment="Left" Margin="679,407,0,0" VerticalAlignment="Top" Width="66" Height="31" Click="BtnBuild_Click"/>
+                    <Button x:Name="btnBuild" Content="Build" HorizontalAlignment="Left" Margin="679,392,0,0" VerticalAlignment="Top" Width="66" Height="31" Click="BtnBuild_Click"/>
                     <Label x:Name="lblEffects" Content="Effects" HorizontalAlignment="Left" Height="33" Margin="457,169,0,0" VerticalAlignment="Top" Width="206" FontSize="20"/>
                     <Button x:Name="btnEffects" Content="+" HorizontalAlignment="Left" Height="23" Margin="679,209,0,0" VerticalAlignment="Top" Width="26" RenderTransformOrigin="0.768,0.507" Click="btnEffects_Click"/>
                     <ListBox x:Name="lbEffects" HorizontalAlignment="Left" Height="158" Margin="462,207,0,0" VerticalAlignment="Top" Width="212"/>
                     <Button x:Name="btnRemoveSubs" Content="-" HorizontalAlignment="Left" Height="19" Margin="679,121,0,0" VerticalAlignment="Top" Width="19" RenderTransformOrigin="0.768,0.507" Click="btnRemoveSubs_Click"/>
                     <Button x:Name="btnClearSubs" Content="Clear" HorizontalAlignment="Left" Height="23" Margin="679,145,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="btnClearSubs_Click"/>
-                    <CheckBox x:Name="cbSound" Content="Sound" HorizontalAlignment="Left" Height="18" Margin="39,111,0,0" VerticalAlignment="Top" Width="74" Click="cbSound_Click" RenderTransformOrigin="0.5,2.556"/>
+                    <CheckBox x:Name="cbSound" Content="Sound" HorizontalAlignment="Left" Height="18" Margin="39,111,0,0" VerticalAlignment="Top" Width="74" Click="cbSound_Click" RenderTransformOrigin="0.5,2.556" IsChecked="True"/>
                     <Button x:Name="btnEffectRemove" Content="-" HorizontalAlignment="Left" Height="23" Margin="679,237,0,0" VerticalAlignment="Top" Width="26" RenderTransformOrigin="0.768,0.507" Click="btnEffectRemove_Click" />
                     <Button x:Name="btnEffectsClear" Content="Clear" HorizontalAlignment="Left" Height="23" Margin="679,269,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="btnEffectsClear_Click" />
                     <!--<ffme:MediaElement x:Name="ffVideo" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Margin="82,320,460,10"></ffme:MediaElement>-->
                     <Label x:Name="lblVideoDetails" Content="Video Details" HorizontalAlignment="Left" Height="256" Margin="34,145,0,0" VerticalAlignment="Top" Width="387" Background="#FFD8D8D8"/>
+                    <Button x:Name="btnPre" Content="Encode" HorizontalAlignment="Left" Height="32" Margin="679,434,0,0" VerticalAlignment="Top" Width="66" Click="btnPre_Click"/>
+                    <Button x:Name="btnStopEncode" Content="Stop" HorizontalAlignment="Left" Height="22" Margin="256,444,0,0" VerticalAlignment="Top" Width="52" Click="btnStopEncode_Click"/>
+                    <Label x:Name="lblVideoInfo" FontSize="14" Content="0%" Margin="34,412,575,57"/>
+                    <ProgressBar x:Name="prbPro" Margin="34,444,548,57"/>
+                    <ComboBox x:Name="cbFormat" Margin="566,443,136,48" SelectedIndex="0">
+                        <ComboBoxItem Content="MKV"/>
+                        <ComboBoxItem Content="MP4"/>
+                    </ComboBox>
+                    <Label Content="File Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="566,412,0,0"/>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Advance" Margin="-2,0">
-                <Grid HorizontalAlignment="Right" Width="787">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0*"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="btnPre" Content="Encode" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="684,438,0,0" VerticalAlignment="Top" Width="52" Click="btnPre_Click"/>
-                    <MediaElement x:Name="mpVideo" LoadedBehavior="Manual" HorizontalAlignment="Left" Height="364" Margin="46,10,0,0" VerticalAlignment="Top" Width="660" RenderTransformOrigin="0.5,0.5" Grid.Column="1" MediaOpened="mpVideo_MediaOpened" />
-                    <Button x:Name="btnStopEncode" Content="Stop" Grid.Column="1" HorizontalAlignment="Left" Height="22" Margin="627,438,0,0" VerticalAlignment="Top" Width="52" Click="btnStopEncode_Click"/>
-                    <Slider x:Name="slVideo" Thumb.DragStarted="slVideo_DragStarted" Thumb.DragCompleted="slVideo_DragCompleted" Grid.Column="1" HorizontalAlignment="Left" Margin="57,379,0,0" VerticalAlignment="Top" Height="19" Width="641" RenderTransformOrigin="0.5,0.5" ValueChanged="slVideo_ValueChanged">
-                        <Slider.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="0.31"/>
-                                <TranslateTransform/>
-                            </TransformGroup>
-                        </Slider.RenderTransform>
-                    </Slider>
-                    <Button x:Name="btnPlay" Content="Play/Pause" Grid.Column="1" HorizontalAlignment="Left" Height="27" Margin="62,402,0,0" VerticalAlignment="Top" Width="74" Click="btnPlay_Click"/>
-                    <Label x:Name="lblVideoInfo" Content=" " Grid.Column="1" Margin="136,405,457,30"/>
-                    <ProgressBar x:Name="prbPro" Grid.Column="1" Margin="62,434,524,28"/>
+            <TabItem Margin="17,-2,-36,-4" Header="Advance">
+                <Grid>
 
+                    <ComboBox x:Name="cbEncoder" HorizontalAlignment="Left" Margin="21,73,0,0" VerticalAlignment="Top" Width="104" Height="23" SelectedIndex="0">
+                        <ComboBoxItem Content="Default" ToolTip="Default Coder"/>
+                        <ComboBoxItem Content="Libx264" ToolTip="Better Coder, same file size."/>
+                        <ComboBoxItem Content="Libx265" ToolTip="Best Coder, less support."/>
+                    </ComboBox>
+                    <Label Content="Video Codec" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="104" Margin="21,36,0,0" FontSize="16"/>
+                    <Label Content="Speed" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="104" Margin="21,186,0,0" FontSize="16"/>
+                    <ComboBox x:Name="cbSpeed" ToolTip="The more speed, the less quality." HorizontalAlignment="Left" Margin="21,223,0,0" VerticalAlignment="Top" Width="104" Height="23" SelectedIndex="3">
+                        <ComboBoxItem Content="Very Slow"/>
+                        <ComboBoxItem Content="Slower"/>
+                        <ComboBoxItem Content="Slow"/>
+                        <ComboBoxItem Content="Medium"/>
+                        <ComboBoxItem Content="Fast"/>
+                        <ComboBoxItem Content="Faster"/>
+                        <ComboBoxItem Content="Very Fast"/>
+                        <ComboBoxItem Content="Super Fast"/>
+                        <ComboBoxItem Content="Ultra Fast"/>
+                    </ComboBox>
+                    <Label Content="Audio Codec" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="104" Margin="21,112,0,0" FontSize="16"/>
+                    <ComboBox x:Name="cbAudioCodec" HorizontalAlignment="Left" Margin="21,149,0,0" VerticalAlignment="Top" Width="104" Height="23" SelectedIndex="0">
+                        <ComboBoxItem Content="AAC"/>
+                        <ComboBoxItem Content="Lib Vorbis"/>
+                    </ComboBox>
                 </Grid>
             </TabItem>
-
-
-
-
-
 
         </TabControl>
     </Grid>
