@@ -58,6 +58,7 @@
                         <ComboBoxItem Content="Default" ToolTip="Default Coder"/>
                         <ComboBoxItem Content="Libx264" ToolTip="Better Coder, same file size."/>
                         <ComboBoxItem Content="Libx265" ToolTip="Best Coder, less support."/>
+                        <ComboBoxItem Content="VP9"/>
                     </ComboBox>
                     <Label Content="Video Codec" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="104" Margin="21,36,0,0" FontSize="16"/>
                     <Label Content="Speed" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="104" Margin="21,186,0,0" FontSize="16"/>

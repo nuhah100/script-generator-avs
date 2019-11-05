@@ -10,17 +10,25 @@ using FFMpegCore.FFMPEG.Argument;
 
 namespace ScriptGeneratorAVS.Classes
 {
-    class BestCodecArgument : Argument
+    class BestCodecArgument : Argument<bool>
     {
         public BestCodecArgument()
         {
 
         }
 
+        public BestCodecArgument(bool value) : base(value)
+        {
+        }
 
         public override string GetStringValue()
         {
-            return "-c:v libx265";
+            if (Value)
+            {
+                return "-c:v libx265";
+            }
+            else
+                return "-c:v vp9";
         }
     }
 }

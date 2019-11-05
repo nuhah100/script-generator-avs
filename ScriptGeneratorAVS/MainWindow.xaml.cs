@@ -280,7 +280,12 @@ namespace ScriptGeneratorAVS
                     }
                 case "libx265":
                     {
-                        container.Add(new BestCodecArgument());
+                        container.Add(new BestCodecArgument(true));
+                        break;
+                    }
+                case "vp9":
+                    {
+                        container.Add(new BestCodecArgument(false));
                         break;
                     }
             }
@@ -419,7 +424,7 @@ namespace ScriptGeneratorAVS
                 }
                 double d = (100 * double.Parse(ss[0].Split('=')[1].ToString())) / Builder.VideoFrames;
                 d = Math.Round(d * 10000) / 10000d;
-                if (d > 100)
+                if (d >= 100)
                     d = 99.999;
                 if (ss[11].Split('=')[1] == "end")
                 {

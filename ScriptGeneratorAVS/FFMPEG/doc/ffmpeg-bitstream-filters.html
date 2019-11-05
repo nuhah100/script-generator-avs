@@ -10,7 +10,7 @@
 <meta name="description" content="FFmpeg Bitstream Filters Documentation: ">
 <meta name="keywords" content="FFmpeg documentation : FFmpeg Bitstream Filters ">
 <meta name="Generator" content="texi2html 5.0">
-<!-- Created on October 26, 2019 by texi2html 5.0 -->
+<!-- Created on January 2, 2019 by texi2html 5.0 -->
 <!--
 texi2html was written by: 
             Lionel Cons <Lionel.Cons@cern.ch> (original author)
@@ -192,10 +192,6 @@ the timing info in the sequence header.
 has a fixed framerate.  Ignored if &lsquo;<samp>tick_rate</samp>&rsquo; is not also set.
 </p>
 </dd>
-<dt>&lsquo;<samp>delete_padding</samp>&rsquo;</dt>
-<dd><p>Deletes Padding OBUs.
-</p>
-</dd>
 </dl>
 
 <a name="chomp"></a>
@@ -212,9 +208,7 @@ DTS-HD.
 <a name="dump_005fextra"></a>
 <h2 class="section"><a href="ffmpeg-bitstream-filters.html#toc-dump_005fextra">2.5 dump_extra</a></h2>
 
-<p>Add extradata to the beginning of the filtered packets except when
-said packets already exactly begin with the extradata that is intended
-to be added.
+<p>Add extradata to the beginning of the filtered packets.
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>freq</samp>&rsquo;</dt>
@@ -234,7 +228,7 @@ It accepts the values:
 </dd>
 </dl>
 
-<p>If not specified it is assumed &lsquo;<samp>k</samp>&rsquo;.
+<p>If not specified it is assumed &lsquo;<samp>e</samp>&rsquo;.
 </p>
 <p>For example the following <code>ffmpeg</code> command forces a global
 header (thus disabling individual packet headers) in the H.264 packets
@@ -345,11 +339,6 @@ removed.
 </dd>
 <dt>&lsquo;<samp>sample_aspect_ratio</samp>&rsquo;</dt>
 <dd><p>Set the sample aspect ratio of the stream in the VUI parameters.
-</p>
-</dd>
-<dt>&lsquo;<samp>overscan_appropriate_flag</samp>&rsquo;</dt>
-<dd><p>Set whether the stream is suitable for display using overscan
-or not (see H.264 section E.2.1).
 </p>
 </dd>
 <dt>&lsquo;<samp>video_format</samp>&rsquo;</dt>
@@ -509,16 +498,6 @@ will replace the current ones if the stream is already cropped.
 </p>
 <p>These fields are set in pixels.  Note that some sizes may not be
 representable if the chroma is subsampled (H.265 section 7.4.3.2.1).
-</p>
-</dd>
-<dt>&lsquo;<samp>level</samp>&rsquo;</dt>
-<dd><p>Set the level in the VPS and SPS.  See H.265 section A.4 and tables
-A.6 and A.7.
-</p>
-<p>The argument must be the name of a level (for example, &lsquo;<samp>5.1</samp>&rsquo;), a
-<em>general_level_idc</em> value (for example, &lsquo;<samp>153</samp>&rsquo; for level 5.1),
-or the special name &lsquo;<samp>auto</samp>&rsquo; indicating that the filter should
-attempt to guess the level from the input stream properties.
 </p>
 </dd>
 </dl>
@@ -747,7 +726,7 @@ Available values are:
 
 </dd>
 <dt>&lsquo;<samp>transfer_characteristics</samp>&rsquo;</dt>
-<dd><p>Set the color transfer.
+<dd><p>Set the color transfert.
 Available values are:
 </p>
 <dl compact="compact">
@@ -846,9 +825,7 @@ on the build only a subset of these may be available.
 </p>
 <dl compact="compact">
 <dt>&lsquo;<samp>color_space</samp>&rsquo;</dt>
-<dd><p>Set the color space value in the frame header.  Note that any frame
-set to RGB will be implicitly set to PC range and that RGB is
-incompatible with profiles 0 and 2.
+<dd><p>Set the color space value in the frame header.
 </p><dl compact="compact">
 <dt>&lsquo;<samp>unknown</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>bt601</samp>&rsquo;</dt>
@@ -861,8 +838,8 @@ incompatible with profiles 0 and 2.
 
 </dd>
 <dt>&lsquo;<samp>color_range</samp>&rsquo;</dt>
-<dd><p>Set the color range value in the frame header.  Note that any value
-imposed by the color space will take precedence over this value.
+<dd><p>Set the color range value in the frame header.  Note that this cannot
+be set in RGB streams.
 </p><dl compact="compact">
 <dt>&lsquo;<samp>tv</samp>&rsquo;</dt>
 <dt>&lsquo;<samp>pc</samp>&rsquo;</dt>
