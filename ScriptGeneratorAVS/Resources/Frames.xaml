@@ -56,7 +56,7 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
-        <Label Content="-" HorizontalAlignment="Left" Margin="79,69,0,0" VerticalAlignment="Top" Width="45" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" FontSize="26"/>
+        <Label Content="-" HorizontalAlignment="Left" Margin="79,69,0,0" VerticalAlignment="Top" Width="23" RenderTransformOrigin="0.5,0.5" FontWeight="Bold" FontSize="26" Height="36"/>
         <Label Content="Frame Start" HorizontalAlignment="Left" Margin="5,51,0,0" VerticalAlignment="Top"/>
         <Label Content="Frame End" HorizontalAlignment="Left" Margin="102,51,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblHeader" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,12,0,0" Height="39" Width="132"/>

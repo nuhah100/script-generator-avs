@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScriptGeneratorAVS"
         mc:Ignorable="d"
-        Title="SetupDLL" Height="320" Width="220" Closing="Window_Closing" WindowStartupLocation="CenterScreen" Icon="/ScriptGeneratorAVS;component/Icon.ico">
+        Title="Setup DLL" Height="320" Width="220" Closing="Window_Closing" WindowStartupLocation="CenterScreen" Icon="/ScriptGeneratorAVS;component/Icon.ico">
     <Grid>
         <Label Content="VsFilterMod" HorizontalAlignment="Left" Height="29" Margin="10,25,0,0" VerticalAlignment="Top" Width="80"/>
         <TextBox x:Name="txtVS" HorizontalAlignment="Left" Height="20" Margin="10,59,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="80"/>
