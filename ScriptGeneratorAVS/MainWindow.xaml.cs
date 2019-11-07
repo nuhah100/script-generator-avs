@@ -250,123 +250,130 @@ namespace ScriptGeneratorAVS
         }
         private void btnPre_Click(object sender, RoutedEventArgs e)
         {
-            container.Clear();
-            var ran = new Random();
-            a = DateTime.Now.ToString("MM-dd-hh-mm"); 
-            File.WriteAllText(Path.GetTempPath() + "Script" + a + ".avs",Builder.Build(true));
-
-
-
-            SaveFileDialog s = new SaveFileDialog();
-            s.Filter = "Video Files(*.mp4/*.mkv)|*.mp4;*.mkv";
-            s.DefaultExt = '.'+cbFormat.Text.ToLower();
-            if(s.ShowDialog() == false)
+            
+            try
             {
-                MessageBox.Show("You must choose a path.","Error",MessageBoxButton.OK,MessageBoxImage.Error);
-                return;
-            }
+                container.Clear();
+                var ran = new Random();
+                a = DateTime.Now.ToString("MM-dd-hh-mm");
+                File.WriteAllText(Path.GetTempPath() + "Script" + a + ".avs", Builder.Build(true));
 
-            container.Add(new InputArgument(Path.GetTempPath() + "Script" + a + ".avs"));
-            container.Add(new ThreadsArgument(true));
-            container.Add(new LogArgument(Path.GetTempPath() + @"log"+a+".txt"));
-            container.Add(new FilterComplex(InputData()));
-            string u = cbEncoder.Text.ToLower();
-            switch(u)
-            {
-                case "libx264":
-                    {
-                        container.Add(new VideoCodecArgument(VideoCodec.LibX264));
-                        break;
-                    }
-                case "libx265":
-                    {
-                        container.Add(new BestCodecArgument(true));
-                        break;
-                    }
-                case "vp9":
-                    {
-                        container.Add(new BestCodecArgument(false));
-                        break;
-                    }
-            }
-            u = cbSpeed.Text.Replace(" ","");
-            SpeedArgument sa = new SpeedArgument();
-            switch(u)
-            {
-                case "VerySlow":
-                    {
-                        sa.Value = Speed.VerySlow;
-                        break;
-                    }
-                case "Slower":
-                    {
-                        sa.Value = Speed.Slower;
-                        break;
-                    }
-                case "Slow":
-                    {
-                        sa.Value = Speed.Slow;
-                        break;
-                    }
-                case "Medium":
-                    {
-                        sa.Value = Speed.Medium;
-                        break;
-                    }
-                case "Fast":
-                    {
-                        sa.Value = Speed.Fast;
-                        break;
-                    }
-                case "Faster":
-                    {
-                        sa.Value = Speed.Faster;
-                        break;
-                    }
-                case "VeryFast":
-                    {
-                        sa.Value = Speed.VeryFast;
-                        break;
-                    }
-                case "SuperFast":
-                    {
-                        sa.Value = Speed.SuperFast;
-                        break;
-                    }
-                case "UltraFast":
-                    {
-                        sa.Value = Speed.UltraFast;
-                        break;
-                    }
-            }
-            container.Add(sa);
-            AudioCodecArgument au = new AudioCodecArgument();
-            switch(cbAudioCodec.Text.Replace(" ","").ToLower())
-            {
-                case "aac":
-                    {
-                        au.Value = AudioCodec.Aac;
-                        break;
-                    }
-                default:
-                    {
-                        au.Value = AudioCodec.LibVorbis;
-                        break;
-                    }
-            }
-            container.Add(au);
-            container.Add(new OutputArgument(new Uri(s.FileName)));
-            container.Add(new OverrideArgument());
-            V = s.FileName;
-            Task t = Task.Run(() => {
-                encoder.Convert(container);
-            });
 
-            tt.Interval = TimeSpan.FromMilliseconds(400);
-            tt.Tick += Tt_Tick;
-            tt.Start();
-            //t.Wait();
 
+                SaveFileDialog s = new SaveFileDialog();
+                s.Filter = "Video Files(*.mp4/*.mkv)|*.mp4;*.mkv";
+                s.DefaultExt = '.' + cbFormat.Text.ToLower();
+                if (s.ShowDialog() == false)
+                {
+                    MessageBox.Show("You must choose a path.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                container.Add(new InputArgument(Path.GetTempPath() + "Script" + a + ".avs"));
+                container.Add(new ThreadsArgument(true));
+                container.Add(new LogArgument(Path.GetTempPath() + @"log" + a + ".txt"));
+                container.Add(new FilterComplex(InputData()));
+                string u = cbEncoder.Text.ToLower();
+                switch (u)
+                {
+                    case "libx264":
+                        {
+                            container.Add(new VideoCodecArgument(VideoCodec.LibX264));
+                            break;
+                        }
+                    case "libx265":
+                        {
+                            container.Add(new BestCodecArgument(true));
+                            break;
+                        }
+                    case "vp9":
+                        {
+                            container.Add(new BestCodecArgument(false));
+                            break;
+                        }
+                }
+                u = cbSpeed.Text.Replace(" ", "");
+                SpeedArgument sa = new SpeedArgument();
+                switch (u)
+                {
+                    case "VerySlow":
+                        {
+                            sa.Value = Speed.VerySlow;
+                            break;
+                        }
+                    case "Slower":
+                        {
+                            sa.Value = Speed.Slower;
+                            break;
+                        }
+                    case "Slow":
+                        {
+                            sa.Value = Speed.Slow;
+                            break;
+                        }
+                    case "Medium":
+                        {
+                            sa.Value = Speed.Medium;
+                            break;
+                        }
+                    case "Fast":
+                        {
+                            sa.Value = Speed.Fast;
+                            break;
+                        }
+                    case "Faster":
+                        {
+                            sa.Value = Speed.Faster;
+                            break;
+                        }
+                    case "VeryFast":
+                        {
+                            sa.Value = Speed.VeryFast;
+                            break;
+                        }
+                    case "SuperFast":
+                        {
+                            sa.Value = Speed.SuperFast;
+                            break;
+                        }
+                    case "UltraFast":
+                        {
+                            sa.Value = Speed.UltraFast;
+                            break;
+                        }
+                }
+                container.Add(sa);
+                AudioCodecArgument au = new AudioCodecArgument();
+                switch (cbAudioCodec.Text.Replace(" ", "").ToLower())
+                {
+                    case "aac":
+                        {
+                            au.Value = AudioCodec.Aac;
+                            break;
+                        }
+                    default:
+                        {
+                            au.Value = AudioCodec.LibVorbis;
+                            break;
+                        }
+                }
+                container.Add(au);
+                container.Add(new OutputArgument(new Uri(s.FileName)));
+                container.Add(new OverrideArgument());
+                V = s.FileName;
+                Task t = Task.Run(() =>
+                {
+                    encoder.Convert(container);
+                });
+                tt.Interval = TimeSpan.FromMilliseconds(400);
+                tt.Tick += Tt_Tick;
+                tt.Start();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private List<string> InputData()
