@@ -48,7 +48,7 @@
                         <ComboBoxItem Content="MP4"/>
                     </ComboBox>
                     <Label Content="File Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="566,412,0,0"/>
-
+                    <Label Content="Developed By MikeTMG" Margin="406,437,227,19"/>
                 </Grid>
             </TabItem>
             <TabItem Margin="17,-2,-36,-4" Header="Advance">
@@ -80,6 +80,7 @@
                     </ComboBox>
                 </Grid>
             </TabItem>
+
 
         </TabControl>
     </Grid>

@@ -54,56 +54,54 @@ namespace ScriptGeneratorAVS
             }
             Console.WriteLine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\FFMPEG\bin\");
             InitializeComponent();
-            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName))
-            {
-                string[] a = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName);
-                Builder.SetPlugins(a);
-            }
-            else
-            {
-                MessageBox.Show("You must first set all the dll files.", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
-                dl.Show();
-            }
-            Builder.SetSound(false);
+            Builder.SetSound(true);
         }
 
 
         private void BtnFindVideo_Click(object sender, RoutedEventArgs e)
         {
-            string url;
-            OpenFileDialog f = new OpenFileDialog
+            try
             {
-                Filter = " Video Files (*.mkv/*.mp4)|*.mkv;*.mp4|All files (*.*)|*.*",//" Matroska Multimedia Container (*.mkv)|*.mkv|All files (*.*)|*.*",//
-                InitialDirectory = Paths.LastPathUse,
-                Multiselect = false
-            };
-
-            if (f.ShowDialog() == true)
-            {
-                url = f.FileName;
-                Paths.LastPathUse = GetDirectoryName(url);
-                txtVideoUrl.Text = GetFileName(url);
-                Builder.SetMainVideo(url);
-                //mpVideo.Source =new Uri(url);
-                lblVideoDetails.Content = new VideoInfo(f.FileName).ToString();
-                string s = lblVideoDetails.Content.ToString();
-                string[] r = s.Split('\n');
-                double n = Paths.GetVideoDuration(f.FileName).TotalSeconds;
-                string[] qq = r[8].Split(' ');
-                Builder.VideoFrameRate = double.Parse(qq[2].Split('f')[0]);
-                Builder.VideoFrames = n * Builder.VideoFrameRate;
-                if (Path.GetExtension(url) == ".mkv")
+                string url;
+                OpenFileDialog f = new OpenFileDialog
                 {
-                    r[4] = "Video Duration: " + Paths.GetVideoDuration(f.FileName).ToString(@"hh\:mm\:ss");
-                    StringBuilder a = new StringBuilder();
-                    for (int i = 0; i < r.Length -1; i++)
+                    Filter = " Video Files (*.mkv/*.mp4)|*.mkv;*.mp4|All files (*.*)|*.*",//" Matroska Multimedia Container (*.mkv)|*.mkv|All files (*.*)|*.*",//
+                    InitialDirectory = Paths.LastPathUse,
+                    Multiselect = false
+                };
+
+                if (f.ShowDialog() == true)
+                {
+                    url = f.FileName;
+                    Paths.LastPathUse = GetDirectoryName(url);
+                    txtVideoUrl.Text = GetFileName(url);
+                    Builder.SetMainVideo(url);
+                    //mpVideo.Source =new Uri(url);
+                    lblVideoDetails.Content = new VideoInfo(f.FileName).ToString();
+                    string s = lblVideoDetails.Content.ToString();
+                    string[] r = s.Split('\n');
+                    double n = Paths.GetVideoDuration(f.FileName).TotalSeconds;
+                    string[] qq = r[8].Split(' ');
+                    Builder.VideoFrameRate = double.Parse(qq[2].Split('f')[0]);
+                    Builder.VideoFrames = n * Builder.VideoFrameRate;
+                    if (Path.GetExtension(url) == ".mkv")
                     {
-                        a.Append(r[i] + "\n");
+                        r[4] = "Video Duration: " + Paths.GetVideoDuration(f.FileName).ToString(@"hh\:mm\:ss");
+                        StringBuilder a = new StringBuilder();
+                        for (int i = 0; i < r.Length - 1; i++)
+                        {
+                            a.Append(r[i] + "\n");
+                        }
+                        a.Append("Size: " + (Paths.ConvertToSize(new FileInfo(url).Length)));
+                        lblVideoDetails.Content = a.ToString();
                     }
-                    a.Append("Size: " + (Paths.ConvertToSize(new FileInfo(url).Length)));
-                    lblVideoDetails.Content = a.ToString();
                 }
             }
+            catch(Exception es)
+            {
+                MessageBox.Show(es.Message,es.Source,MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+            
         }
 
         private void BtnFindSubs_Click(object sender, RoutedEventArgs e)
@@ -223,6 +221,16 @@ namespace ScriptGeneratorAVS
 
         private void BtnBuild_Click(object sender, RoutedEventArgs e)
         {
+            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName))
+            {
+                string[] a = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName);
+                Builder.SetPlugins(a);
+            }
+            else
+            {
+                MessageBox.Show("You must first set all the dll files.", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
+                dl.Show();
+            }
             if (txtVideoUrl.Text == "" || txtVideoUrl.Text == null)
             {
                 MessageBox.Show("You Must Set a Video!", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -258,8 +266,6 @@ namespace ScriptGeneratorAVS
                 a = DateTime.Now.ToString("MM-dd-hh-mm");
                 File.WriteAllText(Path.GetTempPath() + "Script" + a + ".avs", Builder.Build(true));
 
-
-
                 SaveFileDialog s = new SaveFileDialog();
                 s.Filter = "Video Files(*.mp4/*.mkv)|*.mp4;*.mkv";
                 s.DefaultExt = '.' + cbFormat.Text.ToLower();
@@ -273,6 +279,10 @@ namespace ScriptGeneratorAVS
                 container.Add(new ThreadsArgument(true));
                 container.Add(new LogArgument(Path.GetTempPath() + @"log" + a + ".txt"));
                 container.Add(new FilterComplex(InputData()));
+                foreach (var item in InputData())
+                {
+                    Console.WriteLine(item); 
+                }
                 string u = cbEncoder.Text.ToLower();
                 switch (u)
                 {
@@ -383,18 +393,44 @@ namespace ScriptGeneratorAVS
             char sinq = char.Parse("'")
                 , a = 'a';
             List<string> Su = Builder.Subtitles;
-            for (int i = 0; i < Su.Count; i++)
+            if (Su.Count > 1)
             {
-                s = new Uri(Su[i]).AbsolutePath;
-                if(i == 0)
-                    q.Add(@"ass=\" + sinq + s + @"\" + sinq + "[" + (++a) + "];");
-                else
-                    if(i == Su.Count - 1)
-                        q.Add("[" + a + "]" + @"ass=\" + sinq + s + @"\" + sinq);
+                for (int i = 0; i < Su.Count; i++)
+                {
+                    //s = new Uri(Su[i]).AbsolutePath;
+                    //s = s.Replace("%20", " ");
+                    s = Su[i].Replace(@"\\", @"\").Replace('\\','/').Replace(":",@"\:");
+                    if (i == 0)
+                        q.Add(@"ass=" + sinq + s  + sinq + "[" + (++a) + "];");
                     else
-                        q.Add("[" + a + "]" + @"ass=\" + sinq + s + @"\" + sinq + "[" + (++a) + "];");
+                        if (i == Su.Count - 1)
+                        q.Add("[" + a + "]" + @"ass=" + sinq + s + sinq);
+                    else
+                        q.Add("[" + a + "]" + @"ass=" + sinq + s + sinq + "[" + (++a) + "];");
 
+                } 
             }
+            else
+                q.Add(@"ass=\" + sinq + Su[0].Replace(@"\\", @"\").Replace('\\', '/').Replace(":", @"\:") + @"\" + sinq);
+            //if (Su.Count > 1)
+            //{
+            //    for (int i = 0; i < Su.Count; i++)
+            //    {
+            //        //s = new Uri(Su[i]).AbsolutePath;
+            //        //s = s.Replace("%20", " ");
+            //        s = Su[i].Replace(@"\\", @"\").Replace('\\', '/');
+            //        if (i == 0)
+            //            q.Add(@"ass=\" + sinq + s + @"\" + sinq + "[" + (++a) + "];");
+            //        else
+            //            if (i == Su.Count - 1)
+            //            q.Add("[" + a + "]" + @"ass=\" + sinq + s + @"\" + sinq);
+            //        else
+            //            q.Add("[" + a + "]" + @"ass=\" + sinq + s + @"\" + sinq + "[" + (++a) + "];");
+
+            //    }
+            //}
+            //else
+            //    q.Add(@"ass=\" + sinq + Su[0].Replace(@"\\", @"\").Replace('\\', '/') + @"\" + sinq);
 
             return q;
         }
