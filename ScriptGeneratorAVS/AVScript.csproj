@@ -141,6 +141,7 @@
     </ApplicationDefinition>
     <Compile Include="Classes\FilterComplex.cs" />
     <Compile Include="Classes\LogArgument.cs" />
+    <Compile Include="Classes\MapArgument.cs" />
     <Compile Include="Classes\Paths.cs" />
     <Compile Include="Classes\SubArgument.cs" />
     <Compile Include="Classes\BestCodecArgument.cs" />
@@ -301,6 +302,9 @@
     <Content Include="FFMPEG\doc\nut.html" />
     <Content Include="FFMPEG\doc\platform.html" />
     <Content Include="FFMPEG\doc\style.min.css" />
+    <Content Include="FFMPEG\Plugins\ffms2.dll" />
+    <Content Include="FFMPEG\Plugins\ImageSeq.dll" />
+    <Content Include="FFMPEG\Plugins\VSFilterMod.dll" />
     <Resource Include="Icon.ico" />
     <Resource Include="FFMPEG\LICENSE.txt" />
     <Resource Include="FFMPEG\README.txt" />

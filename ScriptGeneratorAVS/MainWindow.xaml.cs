@@ -55,6 +55,11 @@ namespace ScriptGeneratorAVS
             Console.WriteLine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\FFMPEG\bin\");
             InitializeComponent();
             Builder.SetSound(true);
+            Builder.SetPlugins(new string[]{
+            y+@"\FFMPEG\Plugins\ffms2.dll",
+            y+@"\FFMPEG\Plugins\ImageSeq.dll",
+            y+@"\FFMPEG\Plugins\VSFilterMod.dll"
+            });
         }
 
 
@@ -76,7 +81,6 @@ namespace ScriptGeneratorAVS
                     Paths.LastPathUse = GetDirectoryName(url);
                     txtVideoUrl.Text = GetFileName(url);
                     Builder.SetMainVideo(url);
-                    //mpVideo.Source =new Uri(url);
                     lblVideoDetails.Content = new VideoInfo(f.FileName).ToString();
                     string s = lblVideoDetails.Content.ToString();
                     string[] r = s.Split('\n');
@@ -221,16 +225,16 @@ namespace ScriptGeneratorAVS
 
         private void BtnBuild_Click(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName))
-            {
-                string[] a = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName);
-                Builder.SetPlugins(a);
-            }
-            else
-            {
-                MessageBox.Show("You must first set all the dll files.", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
-                dl.Show();
-            }
+            //if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName))
+            //{
+            //    string[] a = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName);
+            //    Builder.SetPlugins(a);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("You must first set all the dll files.", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
+            //    dl.Show();
+            //}
             if (txtVideoUrl.Text == "" || txtVideoUrl.Text == null)
             {
                 MessageBox.Show("You Must Set a Video!", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -264,7 +268,7 @@ namespace ScriptGeneratorAVS
                 container.Clear();
                 var ran = new Random();
                 a = DateTime.Now.ToString("MM-dd-hh-mm");
-                File.WriteAllText(Path.GetTempPath() + "Script" + a + ".avs", Builder.Build(true));
+                File.WriteAllText(Path.GetTempPath() + "Script" + a + ".avs", Builder.Build(false));
 
                 SaveFileDialog s = new SaveFileDialog();
                 s.Filter = "Video Files(*.mp4/*.mkv)|*.mp4;*.mkv";
@@ -274,11 +278,10 @@ namespace ScriptGeneratorAVS
                     MessageBox.Show("You must choose a path.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-
-                container.Add(new InputArgument(Path.GetTempPath() + "Script" + a + ".avs"));
+                container.Add(new InputArgument(new string[] { Builder.GetMainVideo(), Path.GetTempPath() + "Script" + a + ".avs" }));
                 container.Add(new ThreadsArgument(true));
                 container.Add(new LogArgument(Path.GetTempPath() + @"log" + a + ".txt"));
-                container.Add(new FilterComplex(InputData()));
+                //container.Add(new FilterComplex(InputData()));
                 foreach (var item in InputData())
                 {
                     Console.WriteLine(item); 
@@ -368,6 +371,7 @@ namespace ScriptGeneratorAVS
                         }
                 }
                 container.Add(au);
+                container.Add(new MapArgument(new string[] { "1:v:0", "0:a:0" }));
                 container.Add(new OutputArgument(new Uri(s.FileName)));
                 container.Add(new OverrideArgument());
                 V = s.FileName;
@@ -473,7 +477,6 @@ namespace ScriptGeneratorAVS
                 {
                     tt.Stop();
                     encoder.Kill();
-                    //Process.Start(Path.GetDirectoryName(V));
                     Process.Start("explorer.exe", "/select," + V + @"\");
                     d = 100;
                     File.Delete(Path.GetTempPath() + @"log" + a + ".txt");
@@ -487,6 +490,7 @@ namespace ScriptGeneratorAVS
 
         private void btnStopEncode_Click(object sender, RoutedEventArgs e)
         {
+            encoder.Stop();
             encoder.Kill();
         }
 
