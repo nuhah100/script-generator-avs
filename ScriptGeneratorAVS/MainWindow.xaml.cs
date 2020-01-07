@@ -224,27 +224,25 @@ namespace ScriptGeneratorAVS
 
         private void BtnBuild_Click(object sender, RoutedEventArgs e)
         {
-            if (txtVideoUrl.Text == "" || txtVideoUrl.Text == null)
+            if (string.IsNullOrEmpty(txtVideoUrl.Text))
             {
                 MessageBox.Show("You Must Set a Video!", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            Upload();
-
-            //SaveFileDialog f = new SaveFileDialog();
-            //f.Filter = "AVS Files (*.avs)| *.avs";
-            //f.DefaultExt = "avs";
-            //f.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            //bool? result = f.ShowDialog();
-            //if (result == true)
-            //{
-            //    System.IO.Stream fileStream = f.OpenFile();
-            //    System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
-            //    sw.WriteLine(Builder.Build(false));
-            //    sw.Flush();
-            //    sw.Close();
-            //}
+            SaveFileDialog f = new SaveFileDialog();
+            f.Filter = "AVS Files (*.avs)| *.avs";
+            f.DefaultExt = "avs";
+            f.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            bool? result = f.ShowDialog();
+            if (result == true)
+            {
+                System.IO.Stream fileStream = f.OpenFile();
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
+                sw.WriteLine(Builder.Build(false));
+                sw.Flush();
+                sw.Close();
+            }
         }
 
         private void Window_Closed(object sender, RoutedEventArgs e)
@@ -520,7 +518,7 @@ namespace ScriptGeneratorAVS
 
                 td = Task.Run(() =>
                 {
-                    return client.UploadFileAsync(Builder.GetMainVideo(), myFolder, ze);
+                    return client.UploadFileAsync(V, myFolder, ze);
                 });
 
                 Upt.Interval = TimeSpan.FromMilliseconds(30);
