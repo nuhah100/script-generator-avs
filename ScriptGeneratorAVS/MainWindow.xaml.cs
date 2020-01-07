@@ -60,11 +60,20 @@ namespace ScriptGeneratorAVS
             }
             Console.WriteLine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\FFMPEG\bin\");
             InitializeComponent();
-            Builder.SetPlugins(new string[]{
-            y+@"\FFMPEG\Plugins\ffms2.dll",
-            y+@"\FFMPEG\Plugins\ImageSeq.dll",
-            y+@"\FFMPEG\Plugins\VSFilterMod.dll"
-            });
+            string[] files = Directory.GetFiles(y, "*.dll", SearchOption.AllDirectories);
+            List<string> ls = new List<string>();
+            foreach(string s in files)
+            {
+                string ss = Path.GetFileName(s);
+                if (ss.Equals("ffms2.dll") || ss.Equals("ImageSeq.dll") || ss.Equals("VSFilterMod.dll"))
+                    ls.Add(s);
+            }
+            //Builder.SetPlugins(new string[]{
+            //y+@"\FFMPEG\Plugins\ffms2.dll",
+            //y+@"\FFMPEG\Plugins\ImageSeq.dll",
+            //y+@"\FFMPEG\Plugins\VSFilterMod.dll"
+            //});
+            Builder.SetPlugins(ls.ToArray());
         }
 
 
@@ -230,10 +239,12 @@ namespace ScriptGeneratorAVS
                 return;
             }
 
-            SaveFileDialog f = new SaveFileDialog();
-            f.Filter = "AVS Files (*.avs)| *.avs";
-            f.DefaultExt = "avs";
-            f.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            SaveFileDialog f = new SaveFileDialog
+            {
+                Filter = "AVS Files (*.avs)| *.avs",
+                DefaultExt = "avs",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
             bool? result = f.ShowDialog();
             if (result == true)
             {
@@ -263,9 +274,11 @@ namespace ScriptGeneratorAVS
                 a = DateTime.Now.ToString("MM-dd-hh-mm");
                 File.WriteAllText(Path.GetTempPath() + "Script" + a + ".avs", Builder.Build(false));
 
-                SaveFileDialog s = new SaveFileDialog();
-                s.Filter = "Video Files(*.mp4/*.mkv)|*.mp4;*.mkv";
-                s.DefaultExt = '.' + cbFormat.Text.ToLower();
+                SaveFileDialog s = new SaveFileDialog
+                {
+                    Filter = "Video Files(*.mp4/*.mkv)|*.mp4;*.mkv",
+                    DefaultExt = '.' + cbFormat.Text.ToLower()
+                };
                 if (s.ShowDialog() == false)
                 {
                     MessageBox.Show("You must choose a path.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

@@ -27,7 +27,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <PublisherName>Mike Benx</PublisherName>
     <WebPage>avscript.000webhostapp.com</WebPage>
-    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>0.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
