@@ -154,6 +154,10 @@
     <Compile Include="Resources\SetupDLL.xaml.cs">
       <DependentUpon>SetupDLL.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Upload.xaml.cs">
+      <DependentUpon>Upload.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="uploadFileData.cs" />
     <Page Include="Resources\Frames.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -172,6 +176,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\SetupDLL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Upload.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

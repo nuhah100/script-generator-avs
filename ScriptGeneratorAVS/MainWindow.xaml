@@ -12,7 +12,7 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_Tools" Height="24" Width="42">
-                    <MenuItem Header="_Upload To Mega" Click="MenuItem_Upload"/>
+                    <MenuItem Header="Set Mega Info" Click="MenuItem_Upload"/>
                     <Separator/>
                     <MenuItem Header="_Support Me" Click="MenuItem_Click"/>
                     <Separator/>
@@ -36,10 +36,8 @@
                     <ListBox x:Name="lbEffects" HorizontalAlignment="Left" Height="158" Margin="462,207,0,0" VerticalAlignment="Top" Width="212"/>
                     <Button x:Name="btnRemoveSubs" Content="-" HorizontalAlignment="Left" Height="19" Margin="679,121,0,0" VerticalAlignment="Top" Width="19" RenderTransformOrigin="0.768,0.507" Click="btnRemoveSubs_Click"/>
                     <Button x:Name="btnClearSubs" Content="Clear" HorizontalAlignment="Left" Height="23" Margin="679,145,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="btnClearSubs_Click"/>
-                    <CheckBox x:Name="cbSound" Content="Sound" HorizontalAlignment="Left" Height="18" Margin="39,111,0,0" VerticalAlignment="Top" Width="74" Click="cbSound_Click" RenderTransformOrigin="0.5,2.556" IsChecked="True"/>
                     <Button x:Name="btnEffectRemove" Content="-" HorizontalAlignment="Left" Height="23" Margin="679,237,0,0" VerticalAlignment="Top" Width="26" RenderTransformOrigin="0.768,0.507" Click="btnEffectRemove_Click" />
                     <Button x:Name="btnEffectsClear" Content="Clear" HorizontalAlignment="Left" Height="23" Margin="679,269,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="0.768,0.507" Click="btnEffectsClear_Click" />
-                    <!--<ffme:MediaElement x:Name="ffVideo" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Margin="82,320,460,10"></ffme:MediaElement>-->
                     <Label x:Name="lblVideoDetails" Content="Video Details" HorizontalAlignment="Left" Height="256" Margin="34,145,0,0" VerticalAlignment="Top" Width="387" Background="#FFD8D8D8"/>
                     <Button x:Name="btnPre" Content="Encode" HorizontalAlignment="Left" Height="32" Margin="679,434,0,0" VerticalAlignment="Top" Width="66" Click="btnPre_Click"/>
                     <Button x:Name="btnStopEncode" Content="Stop" HorizontalAlignment="Left" Height="22" Margin="256,444,0,0" VerticalAlignment="Top" Width="52" Click="btnStopEncode_Click"/>
@@ -51,6 +49,7 @@
                     </ComboBox>
                     <Label Content="File Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="566,412,0,0"/>
                     <Label Content="Developed By MikeTMG" Margin="406,437,227,19"/>
+                    <CheckBox x:Name="cbUpload" Content="Upload" HorizontalAlignment="Left" Height="18" Margin="566,383,0,0" VerticalAlignment="Top" Width="74" RenderTransformOrigin="0.5,2.556" IsChecked="True"/>
                 </Grid>
             </TabItem>
             <TabItem Margin="17,-2,-36,-4" Header="Advance">

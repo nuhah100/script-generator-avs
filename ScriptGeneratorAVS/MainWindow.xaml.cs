@@ -25,6 +25,9 @@ using FFMpegCore.FFMPEG.Enums;
 using FFMpegCore.FFMPEG.Argument;
 using System.Timers;
 using System.Diagnostics;
+using CG.Web.MegaApiClient;
+using ScriptGeneratorAVS.Resources;
+using System.Threading;
 
 namespace ScriptGeneratorAVS
 {
@@ -35,8 +38,12 @@ namespace ScriptGeneratorAVS
     {
         FFMpeg encoder;
         System.Windows.Threading.DispatcherTimer tt = new System.Windows.Threading.DispatcherTimer();
+        public System.Windows.Threading.DispatcherTimer Upt = new System.Windows.Threading.DispatcherTimer();
         string a,V;
         ArgumentContainer container = new ArgumentContainer();// FFMpegOptions.Configure(new FFMpegOptions { RootDirectory = @"C:\Users\moish\source\repos\ScriptGeneratorAVS\ScriptGeneratorAVS\FFMPEG\bin\" });
+        private CancellationTokenSource uploadCancellationTokenSource = new CancellationTokenSource();
+        MegaApiClient client = new MegaApiClient();
+        Task<INode> td;
         public MainWindow()
         {
             string y = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)));
@@ -53,7 +60,6 @@ namespace ScriptGeneratorAVS
             }
             Console.WriteLine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\FFMPEG\bin\");
             InitializeComponent();
-            Builder.SetSound(true);
             Builder.SetPlugins(new string[]{
             y+@"\FFMPEG\Plugins\ffms2.dll",
             y+@"\FFMPEG\Plugins\ImageSeq.dll",
@@ -224,35 +230,27 @@ namespace ScriptGeneratorAVS
 
         private void BtnBuild_Click(object sender, RoutedEventArgs e)
         {
-            //if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName))
-            //{
-            //    string[] a = File.ReadAllLines(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Paths.SaveName);
-            //    Builder.SetPlugins(a);
-            //}
-            //else
-            //{
-            //    MessageBox.Show("You must first set all the dll files.", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
-            //    dl.Show();
-            //}
             if (txtVideoUrl.Text == "" || txtVideoUrl.Text == null)
             {
                 MessageBox.Show("You Must Set a Video!", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            SaveFileDialog f = new SaveFileDialog();
-            f.Filter = "AVS Files (*.avs)| *.avs";
-            f.DefaultExt = "avs";
-            f.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            bool? result = f.ShowDialog();
-            if (result == true)
-            {
-                System.IO.Stream fileStream = f.OpenFile();
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
-                sw.WriteLine(Builder.Build(false));
-                sw.Flush();
-                sw.Close();
-            }
+            Upload();
+
+            //SaveFileDialog f = new SaveFileDialog();
+            //f.Filter = "AVS Files (*.avs)| *.avs";
+            //f.DefaultExt = "avs";
+            //f.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            //bool? result = f.ShowDialog();
+            //if (result == true)
+            //{
+            //    System.IO.Stream fileStream = f.OpenFile();
+            //    System.IO.StreamWriter sw = new System.IO.StreamWriter(fileStream);
+            //    sw.WriteLine(Builder.Build(false));
+            //    sw.Flush();
+            //    sw.Close();
+            //}
         }
 
         private void Window_Closed(object sender, RoutedEventArgs e)
@@ -263,6 +261,11 @@ namespace ScriptGeneratorAVS
         {
             try
             {
+                if (string.IsNullOrEmpty(txtVideoUrl.Text))
+                {
+                    MessageBox.Show("You Must Set a Video!", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 container.Clear();
                 var ran = new Random();
                 a = DateTime.Now.ToString("MM-dd-hh-mm");
@@ -378,7 +381,7 @@ namespace ScriptGeneratorAVS
                     }
                     catch(FFMpegCore.FFMPEG.Exceptions.FFMpegException er)
                     {
-                        MessageBox.Show(er.Message+"\n"+er.Source+"\n"+er.Type, er.InnerException.Message,MessageBoxButton.OK,MessageBoxImage.Error,MessageBoxResult.OK);
+                        MessageBox.Show(er.Message+"\n"+er.Source+"\n"+er.Type, er.InnerException?.Message,MessageBoxButton.OK,MessageBoxImage.Error,MessageBoxResult.OK);
                     }
                 });
                 
@@ -446,6 +449,7 @@ namespace ScriptGeneratorAVS
                     
                 }
                 double d = (100 * double.Parse(ss[0].Split('=')[1].ToString())) / Builder.VideoFrames;
+                bool isUpload = false;
                 d = Math.Round(d * 10000) / 10000d;
                 if (d >= 100)
                     d = 99.999;
@@ -457,9 +461,29 @@ namespace ScriptGeneratorAVS
                     d = 100;
                     File.Delete(Path.GetTempPath() + "log" + a + ".txt");
                     File.Delete(Path.GetTempPath() + "Script" + a + ".avs");
+                    string yi = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)));
+                    string pa = @"\FFMPEG\doc\";
+                    string n = "Saves.txt";
+                    string c = yi + pa + n;
+                    if (File.Exists(c))
+                    {
+                        if (cbUpload.IsChecked == true)
+                        {
+                            isUpload = true;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("You didnt set mega account", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-                lblVideoInfo.Content = d + "%";
+                lblVideoInfo.Content = d + "%" + " (Encoding)";
                 prbPro.Value = d;
+                Thread.Sleep(200);
+                if(isUpload)
+                {
+                    Upload();
+                }
             }
         }
  
@@ -471,7 +495,60 @@ namespace ScriptGeneratorAVS
 
         private void MenuItem_Upload(object sender, RoutedEventArgs e)
         {
+            Upload u = new Upload();
+            u.Show();
+        }
+        private void Upload()
+        {
+            string yi = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)));
+            string pa = @"\FFMPEG\doc\";
+            string n = "Saves.txt";
+            string c = yi + pa + n;
+            if (File.Exists(c))
+            {
+                string[] lines = File.ReadAllLines(c);
+                
+                client.Login(lines[0], lines[1]);
+                Progress<double> ze = new Progress<double>(p =>
+                {
+                    Console.WriteLine($"Progress updated: {p}");
+                    double d = Math.Round(p * 10000) / 10000d;
+                    lblVideoInfo.Content = d + "%" + " (Upload)";
+                    prbPro.Value = d;
 
+                });
+               
+
+                IEnumerable<INode> nodes = client.GetNodes();
+
+                INode root = nodes.Single(x => x.Type == NodeType.Root);
+                INode myFolder = client.CreateFolder("Upload" + a, root);
+
+                td = Task.Run(() =>
+                {
+                    return client.UploadFileAsync(Builder.GetMainVideo(), myFolder, ze);
+                });
+
+                Upt.Interval = TimeSpan.FromMilliseconds(30);
+                Upt.Tick += Upt_Tick;
+                Upt.Start();
+            }
+        }
+
+        private void Upt_Tick(object sender, EventArgs e)
+        {
+            if (td.IsCompleted)
+            {
+                INode m = td.Result;
+                Uri downloadLink = client.GetDownloadLink(m);
+                Clipboard.SetText(downloadLink.ToString());
+                Console.WriteLine(downloadLink.ToString());
+
+                MessageBox.Show("Upload Complete!\n" + downloadLink.ToString() + "\nCopied to Clipboard!", "Finished!", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                client.Logout();
+                Upt.Stop();
+            }
         }
 
         private void StopEncoder()
@@ -479,6 +556,94 @@ namespace ScriptGeneratorAVS
             encoder.Stop();
             encoder.Kill();
         }
+        //public uploadFileData UploadToMegaAsync(string Userrrr,string Passss,  string filePathOnComputer, string newFileNameOnMega)
+        //{
+        //    //Implemnt Struct
+        //    uploadFileData myMegaFileData = new uploadFileData();
+
+        //    //Start Mega Cient
+        //    var myMegaClient = new MegaApiClient();
+
+            
+        //    //Login To Mega
+        //    myMegaClient.Login(Userrrr, Passss);
+
+
+        //    IEnumerable<INode> nodes = myMegaClient.GetNodes();
+
+        //    INode root = nodes.Single(x => x.Type == NodeType.Root);
+        //    INode myFolder = myMegaClient.CreateFolder("Upload", root);
+        //    ////Get All (File & Folders) in Mega Account
+        //    //IEnumerable<INode> nodes = myMegaClient.GetNodes();
+
+        //    ////Creat List Of All Folders In Mega Account
+        //    //List<INode> megaFolders = nodes.Where(n => n.Type == NodeType.Directory).ToList();
+
+        //    ////Choose Exist Folder In Mega Account By Name & Id
+        //    //INode myFolderOnMega = megaFolders.Where(folder => folder.Name == megaFolderName && folder.Id == megaFolderID).FirstOrDefault();
+
+        //    //Upload The File
+        //    //Normal Upload
+        //    //INode myFile = myMegaClient.UploadFile(filePathOnComputer, myFolderOnMega);
+
+        //    //NEWLY ADDED
+        //    var progress = new Progress<double>();
+        //    progress.ProgressChanged += (s, progressValue) =>
+        //    {
+        //        //Update the UI (or whatever) with the progressValue 
+        //        int d = Convert.ToInt32(progressValue);
+        //        lblVideoInfo.Content = d + "%";
+        //        prbPro.Value = d /100;
+        //    };
+
+        //    //NEWLY ADDED
+        //    if (uploadCancellationTokenSource.IsCancellationRequested)
+        //    {
+        //        uploadCancellationTokenSource.Dispose();
+        //        uploadCancellationTokenSource = new CancellationTokenSource();
+        //    }
+
+        //    // Upload With progress bar
+        //    Task<INode> td = Task.Run(() =>
+        //            {
+        //                return myMegaClient.UploadFileAsync(filePathOnComputer, myFolder, progress, uploadCancellationTokenSource.Token);
+        //            }
+        //    );
+            
+        //    INode myFile = td.Result;
+        //    //Rename The File In Mega Server
+        //    if (string.IsNullOrEmpty(newFileNameOnMega))
+        //    {
+
+        //    }
+        //    else
+        //    {
+        //        myMegaClient.Rename(myFile, newFileNameOnMega);
+        //    }
+
+        //    //Get Download Link
+        //    Uri downloadLink = myMegaClient.GetDownloadLink(myFile);
+
+        //    myMegaFileData.megaFileId = myFile.Id;
+        //    Clipboard.SetText(myMegaFileData.megaFileId);
+        //    myMegaFileData.megaFileType = myFile.Type.ToString();
+        //    myMegaFileData.megaFileName = myFile.Name;
+        //    myMegaFileData.megaFileOwner = myFile.Owner;
+        //    myMegaFileData.megaFileParentId = myFile.ParentId;
+        //    myMegaFileData.megaFileCreationDate = myFile.CreationDate.ToString();
+        //    myMegaFileData.megaFileModificationDate = myFile.ModificationDate.ToString();
+        //    myMegaFileData.megaFileSize = myFile.Size.ToString();
+        //    myMegaFileData.megaFileDownloadLink = downloadLink.ToString();
+
+        //    myMegaClient.Logout();
+
+        //    return myMegaFileData;
+        //}
+        //private void StopUpload(object sender, EventArgs e)
+        //{
+        //    if (!uploadCancellationTokenSource.IsCancellationRequested)
+        //        uploadCancellationTokenSource.Cancel();
+        //}
 
     }
 }

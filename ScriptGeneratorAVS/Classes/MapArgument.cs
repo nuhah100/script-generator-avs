@@ -21,16 +21,17 @@ namespace ScriptGeneratorAVS.Classes
 
         public override string GetStringValue()
         {
+            char c = '"';
             if(fa != null)
             {
                 StringBuilder s = new StringBuilder();
                 foreach(var a in fa)
                 {
-                    s.Append("-map " + a + " ");
+                    s.Append("-map " + c +  a + "?" + c+ " ");
                 }
                 return s.ToString();
             }
-            return "-map " + Value;
+            return "-map " +c + Value +"?"+c;
         }
     }
 }
