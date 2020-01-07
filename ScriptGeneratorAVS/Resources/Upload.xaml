@@ -43,6 +43,6 @@
         </PasswordBox>
         <Label Content="Email" HorizontalAlignment="Left" Margin="125,40,0,0" VerticalAlignment="Top"/>
         <Label Content="Password" HorizontalAlignment="Left" Margin="115,113,0,0" VerticalAlignment="Top"/>
-        <Button Content="Save" Margin="106,186,106,59" Click="Button_Click"/>
+        <Button Content="Save" Margin="106,172,106,64" Click="Button_Click"/>
     </Grid>
 </Window>

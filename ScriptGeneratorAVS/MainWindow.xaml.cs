@@ -208,12 +208,6 @@ namespace ScriptGeneratorAVS
             Builder.RemoveSubtitle(n);
         }
 
-        private void cbSound_Click(object sender, RoutedEventArgs e)
-        {
-            bool b = cbSound.IsChecked.Value;
-            Builder.SetSound(b);
-        }
-
         private void btnEffectRemove_Click(object sender, RoutedEventArgs e)
         {
             Builder.RemoveEffect(lbEffects.SelectedIndex);
