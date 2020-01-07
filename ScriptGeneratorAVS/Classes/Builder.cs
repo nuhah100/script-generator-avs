@@ -11,7 +11,6 @@ namespace ScriptGeneratorAVS.Classes
     {
 
         private static string MainVideo;
-        private static bool Sound;
         public static List<string> Subtitles = new List<string>();
         public static List<string> Plugins = new List<string>();
         public static List<Tuple<string,string>> EffectsFrames = new List<Tuple<string, string>>();
@@ -20,14 +19,6 @@ namespace ScriptGeneratorAVS.Classes
         public static double VideoFrameRate;
         public static double VideoFrames { get => videoFrames; set => videoFrames = value; }
 
-        public static void SetSound(bool b)
-        {
-            Sound = b;
-        }
-        public static bool GetSound()
-        {
-            return Sound;
-        }
         public static void SetPlugins(string[] names)
         {
             foreach (var l in names)
@@ -83,10 +74,7 @@ namespace ScriptGeneratorAVS.Classes
             {
                 foreach (var a in Plugins)
                     s.Append("LoadPlugin(" + qu + a + qu + ")" + "\n");
-                if (Sound)
-                    s.Append("FFmpegSource2(" + qu + MainVideo + qu + ")\n");
-                else
-                    s.Append("FFVideoSource(" + qu + MainVideo + qu + ")\n");
+                s.Append("FFmpegSource2(" + qu + MainVideo + qu + ")\n");
             }
             else
                 s.Append("DirectShowSource(" + qu + MainVideo + qu + ")\n");

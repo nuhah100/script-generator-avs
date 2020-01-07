@@ -522,7 +522,7 @@ namespace ScriptGeneratorAVS
                 IEnumerable<INode> nodes = client.GetNodes();
 
                 INode root = nodes.Single(x => x.Type == NodeType.Root);
-                INode myFolder = client.CreateFolder("Upload" + a, root);
+                INode myFolder = client.CreateFolder("Upload-s" + a, root);
 
                 td = Task.Run(() =>
                 {
