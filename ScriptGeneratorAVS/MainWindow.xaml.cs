@@ -47,9 +47,19 @@ namespace ScriptGeneratorAVS
         public MainWindow()
         {
             string y = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)));
+            string ff = y + @"\FFMPEG\bin\";
+            string[] files = Directory.GetFiles(y, "*.exe", SearchOption.AllDirectories);
+            List<string> ls = new List<string>();
+            foreach (var item in files)
+            {
+                if (Path.GetFileName(item).Equals("ffmpeg.exe"))
+                    ff = Path.GetDirectoryName(item);
+
+            }
             try 
             {
-                FFMpegOptions.Configure(new FFMpegOptions { RootDirectory = y +@"\FFMPEG\bin\" });
+                //FFMpegOptions.Configure(new FFMpegOptions { RootDirectory = y +@"\FFMPEG\bin\" });
+                FFMpegOptions.Configure(new FFMpegOptions { RootDirectory = ff });
                 encoder = new FFMpeg();
 
             }
@@ -60,8 +70,8 @@ namespace ScriptGeneratorAVS
             }
             Console.WriteLine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\FFMPEG\bin\");
             InitializeComponent();
-            string[] files = Directory.GetFiles(y, "*.dll", SearchOption.AllDirectories);
-            List<string> ls = new List<string>();
+            files = Directory.GetFiles(y, "*.dll", SearchOption.AllDirectories);
+            ls = new List<string>();
             foreach(string s in files)
             {
                 string ss = Path.GetFileName(s);
