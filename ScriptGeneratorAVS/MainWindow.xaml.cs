@@ -411,32 +411,32 @@ namespace ScriptGeneratorAVS
             }
         }
 
-        private List<string> InputData()
-        {
-            List<string> q = new List<string>();
-            string s;
-            char sinq = char.Parse("'")
-                , a = 'a';
-            List<string> Su = Builder.Subtitles;
-            if (Su.Count > 1)
-            {
-                for (int i = 0; i < Su.Count; i++)
-                {
-                    s = Su[i].Replace(@"\\", @"\").Replace('\\','/').Replace(":",@"\:");
-                    if (i == 0)
-                        q.Add(@"ass=" + sinq + s  + sinq + "[" + (++a) + "];");
-                    else
-                        if (i == Su.Count - 1)
-                        q.Add("[" + a + "]" + @"ass=" + sinq + s + sinq);
-                    else
-                        q.Add("[" + a + "]" + @"ass=" + sinq + s + sinq + "[" + (++a) + "];");
+        //private List<string> InputData()
+        //{
+        //    List<string> q = new List<string>();
+        //    string s;
+        //    char sinq = char.Parse("'")
+        //        , a = 'a';
+        //    List<string> Su = Builder.Subtitles;
+        //    if (Su.Count > 1)
+        //    {
+        //        for (int i = 0; i < Su.Count; i++)
+        //        {
+        //            s = Su[i].Replace(@"\\", @"\").Replace('\\','/').Replace(":",@"\:");
+        //            if (i == 0)
+        //                q.Add(@"ass=" + sinq + s  + sinq + "[" + (++a) + "];");
+        //            else
+        //                if (i == Su.Count - 1)
+        //                q.Add("[" + a + "]" + @"ass=" + sinq + s + sinq);
+        //            else
+        //                q.Add("[" + a + "]" + @"ass=" + sinq + s + sinq + "[" + (++a) + "];");
 
-                } 
-            }
-            else
-                q.Add(@"ass=\" + sinq + Su[0].Replace(@"\\", @"\").Replace('\\', '/').Replace(":", @"\:") + @"\" + sinq);
-            return q;
-        }
+        //        } 
+        //    }
+        //    else
+        //        q.Add(@"ass=\" + sinq + Su[0].Replace(@"\\", @"\").Replace('\\', '/').Replace(":", @"\:") + @"\" + sinq);
+        //    return q;
+        //}
 
         private void Tt_Tick(object sender, EventArgs e)
         {
@@ -480,17 +480,18 @@ namespace ScriptGeneratorAVS
                     string pa = @"\FFMPEG\doc\";
                     string n = "Saves.txt";
                     string c = yi + pa + n;
-                    if (File.Exists(c))
+                    if (cbUpload.IsChecked == true)
                     {
-                        if (cbUpload.IsChecked == true)
+                        if (File.Exists(c))
                         {
                             isUpload = true;
                         }
+                        else
+                        {
+                            MessageBox.Show("You didn't set Mega Account.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
-                    else
-                    {
-                        MessageBox.Show("You didnt set mega account", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    
                 }
                 lblVideoInfo.Content = d + "%" + " (Encoding)";
                 prbPro.Value = d;
