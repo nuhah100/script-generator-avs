@@ -543,7 +543,7 @@ namespace ScriptGeneratorAVS
                 Uri downloadLink = client.GetDownloadLink(m);
                 Clipboard.SetText(downloadLink.ToString());
                 Console.WriteLine(downloadLink.ToString());
-
+                System.Diagnostics.Process.Start(downloadLink.ToString());
                 MessageBox.Show("Upload Complete!\n" + downloadLink.ToString() + "\nCopied to Clipboard!", "Finished!", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 client.Logout();
