@@ -12,8 +12,10 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_Tools" Height="24" Width="42">
-                    <MenuItem Header="_SetupDLL" Click="MenuItem_Click" />
-                    <Separator />
+                    <MenuItem Header="_Upload To Mega" Click="MenuItem_Upload"/>
+                    <Separator/>
+                    <MenuItem Header="_Support Me" Click="MenuItem_Click"/>
+                    <Separator/>
                     <MenuItem Header="_Exit" Click="Window_Closed" />
                 </MenuItem>
             </Menu>

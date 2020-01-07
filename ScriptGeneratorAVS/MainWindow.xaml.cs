@@ -33,7 +33,6 @@ namespace ScriptGeneratorAVS
     /// </summary>
     public partial class MainWindow : Window
     {
-        SetUpDLL dl = new SetUpDLL();
         FFMpeg encoder;
         System.Windows.Threading.DispatcherTimer tt = new System.Windows.Threading.DispatcherTimer();
         string a,V;
@@ -133,7 +132,7 @@ namespace ScriptGeneratorAVS
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            dl.Show();
+
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -262,7 +261,6 @@ namespace ScriptGeneratorAVS
         }
         private void btnPre_Click(object sender, RoutedEventArgs e)
         {
-            
             try
             {
                 container.Clear();
@@ -281,11 +279,8 @@ namespace ScriptGeneratorAVS
                 container.Add(new InputArgument(new string[] { Builder.GetMainVideo(), Path.GetTempPath() + "Script" + a + ".avs" }));
                 container.Add(new ThreadsArgument(true));
                 container.Add(new LogArgument(Path.GetTempPath() + @"log" + a + ".txt"));
-                //container.Add(new FilterComplex(InputData()));
-                foreach (var item in InputData())
-                {
-                    Console.WriteLine(item); 
-                }
+
+                
                 string u = cbEncoder.Text.ToLower();
                 switch (u)
                 {
@@ -356,29 +351,37 @@ namespace ScriptGeneratorAVS
                         }
                 }
                 container.Add(sa);
-                AudioCodecArgument au = new AudioCodecArgument();
+                AudioCodecArgument ac = new AudioCodecArgument();
                 switch (cbAudioCodec.Text.Replace(" ", "").ToLower())
                 {
                     case "aac":
                         {
-                            au.Value = AudioCodec.Aac;
+                            ac.Value = AudioCodec.Aac;
                             break;
                         }
                     default:
                         {
-                            au.Value = AudioCodec.LibVorbis;
+                            ac.Value = AudioCodec.LibVorbis;
                             break;
                         }
                 }
-                container.Add(au);
+                container.Add(ac);
                 container.Add(new MapArgument(new string[] { "1:v:0", "0:a:0" }));
                 container.Add(new OutputArgument(new Uri(s.FileName)));
                 container.Add(new OverrideArgument());
                 V = s.FileName;
                 Task t = Task.Run(() =>
                 {
-                    encoder.Convert(container);
+                    try
+                    {
+                        encoder.Convert(container);
+                    }
+                    catch(FFMpegCore.FFMPEG.Exceptions.FFMpegException er)
+                    {
+                        MessageBox.Show(er.Message+"\n"+er.Source+"\n"+er.Type, er.InnerException.Message,MessageBoxButton.OK,MessageBoxImage.Error,MessageBoxResult.OK);
+                    }
                 });
+                
                 tt.Interval = TimeSpan.FromMilliseconds(400);
                 tt.Tick += Tt_Tick;
                 tt.Start();
@@ -401,8 +404,6 @@ namespace ScriptGeneratorAVS
             {
                 for (int i = 0; i < Su.Count; i++)
                 {
-                    //s = new Uri(Su[i]).AbsolutePath;
-                    //s = s.Replace("%20", " ");
                     s = Su[i].Replace(@"\\", @"\").Replace('\\','/').Replace(":",@"\:");
                     if (i == 0)
                         q.Add(@"ass=" + sinq + s  + sinq + "[" + (++a) + "];");
@@ -416,33 +417,11 @@ namespace ScriptGeneratorAVS
             }
             else
                 q.Add(@"ass=\" + sinq + Su[0].Replace(@"\\", @"\").Replace('\\', '/').Replace(":", @"\:") + @"\" + sinq);
-            //if (Su.Count > 1)
-            //{
-            //    for (int i = 0; i < Su.Count; i++)
-            //    {
-            //        //s = new Uri(Su[i]).AbsolutePath;
-            //        //s = s.Replace("%20", " ");
-            //        s = Su[i].Replace(@"\\", @"\").Replace('\\', '/');
-            //        if (i == 0)
-            //            q.Add(@"ass=\" + sinq + s + @"\" + sinq + "[" + (++a) + "];");
-            //        else
-            //            if (i == Su.Count - 1)
-            //            q.Add("[" + a + "]" + @"ass=\" + sinq + s + @"\" + sinq);
-            //        else
-            //            q.Add("[" + a + "]" + @"ass=\" + sinq + s + @"\" + sinq + "[" + (++a) + "];");
-
-            //    }
-            //}
-            //else
-            //    q.Add(@"ass=\" + sinq + Su[0].Replace(@"\\", @"\").Replace('\\', '/') + @"\" + sinq);
-
             return q;
         }
 
         private void Tt_Tick(object sender, EventArgs e)
         {
-
-
             if (File.Exists(Path.GetTempPath() + @"log"+a+".txt"))
             {
                 StringBuilder q = new StringBuilder();
@@ -455,19 +434,16 @@ namespace ScriptGeneratorAVS
                         q.Append(line + "\n");
                     }
                 }
-                if (container.Contains<BestCodecArgument>())
-                {
-                    
-                }
                 string ls = q.ToString();
-                if (ls == null || ls == "")
+                if (string.IsNullOrEmpty(ls))
                     return;
-                string[] ss, y = ls.Split(new char[] { '\n' });
+                string[] ss = new string[12],
+                    y = ls.Split(new char[] { '\n' });
                 Array.Reverse(y);
-                ss = new string[12];
                 for (int ii = 0; ii < ss.Length; ii++)
                 {
                     ss[ii] = y[12 - ii];
+                    
                 }
                 double d = (100 * double.Parse(ss[0].Split('=')[1].ToString())) / Builder.VideoFrames;
                 d = Math.Round(d * 10000) / 10000d;
@@ -476,10 +452,10 @@ namespace ScriptGeneratorAVS
                 if (ss[11].Split('=')[1] == "end")
                 {
                     tt.Stop();
-                    encoder.Kill();
+                    StopEncoder();
                     Process.Start("explorer.exe", "/select," + V + @"\");
                     d = 100;
-                    File.Delete(Path.GetTempPath() + @"log" + a + ".txt");
+                    File.Delete(Path.GetTempPath() + "log" + a + ".txt");
                     File.Delete(Path.GetTempPath() + "Script" + a + ".avs");
                 }
                 lblVideoInfo.Content = d + "%";
@@ -489,6 +465,16 @@ namespace ScriptGeneratorAVS
  
 
         private void btnStopEncode_Click(object sender, RoutedEventArgs e)
+        {
+            StopEncoder();
+        }
+
+        private void MenuItem_Upload(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StopEncoder()
         {
             encoder.Stop();
             encoder.Kill();
