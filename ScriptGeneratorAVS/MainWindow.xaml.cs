@@ -28,6 +28,8 @@ using System.Diagnostics;
 using CG.Web.MegaApiClient;
 using ScriptGeneratorAVS.Resources;
 using System.Threading;
+using System.Text.RegularExpressions;
+using System.Windows.Shell;
 
 namespace ScriptGeneratorAVS
 {
@@ -157,7 +159,7 @@ namespace ScriptGeneratorAVS
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            Process.Start("https://www.paypal.me/MOKV");
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -294,11 +296,12 @@ namespace ScriptGeneratorAVS
                     MessageBox.Show("You must choose a path.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+               // encoder.ExtractAudio(new VideoInfo(new FileInfo(Builder.GetMainVideo())),new FileInfo(Path.GetTempPath() + "Sound" + a + ".mp3"))
+                
                 container.Add(new InputArgument(new string[] { Builder.GetMainVideo(), Path.GetTempPath() + "Script" + a + ".avs" }));
                 container.Add(new ThreadsArgument(true));
                 container.Add(new LogArgument(Path.GetTempPath() + @"log" + a + ".txt"));
 
-                
                 string u = cbEncoder.Text.ToLower();
                 switch (u)
                 {
@@ -319,73 +322,78 @@ namespace ScriptGeneratorAVS
                         }
                 }
                 u = cbSpeed.Text.Replace(" ", "");
-                SpeedArgument sa = new SpeedArgument();
+                
+                SpeedArgument sa = new SpeedArgument(Speed.Medium);
                 switch (u)
                 {
                     case "VerySlow":
                         {
-                            sa.Value = Speed.VerySlow;
+                            sa= new SpeedArgument(Speed.VerySlow);
                             break;
                         }
                     case "Slower":
                         {
-                            sa.Value = Speed.Slower;
+                            sa = new SpeedArgument(Speed.Slower);
                             break;
                         }
                     case "Slow":
                         {
-                            sa.Value = Speed.Slow;
+                            sa = new SpeedArgument(Speed.Slow);
                             break;
                         }
                     case "Medium":
                         {
-                            sa.Value = Speed.Medium;
+                            sa = new SpeedArgument(Speed.Medium);
                             break;
                         }
                     case "Fast":
                         {
-                            sa.Value = Speed.Fast;
+                            sa= new SpeedArgument(Speed.Fast);
                             break;
                         }
                     case "Faster":
                         {
-                            sa.Value = Speed.Faster;
+                            sa = new SpeedArgument(Speed.Faster);
                             break;
                         }
                     case "VeryFast":
                         {
-                            sa.Value = Speed.VeryFast;
+                            sa = new SpeedArgument(Speed.VeryFast);
                             break;
                         }
                     case "SuperFast":
                         {
-                            sa.Value = Speed.SuperFast;
+                            sa = new SpeedArgument(Speed.SuperFast);
                             break;
                         }
                     case "UltraFast":
                         {
-                            sa.Value = Speed.UltraFast;
+                            sa = new SpeedArgument(Speed.UltraFast);
                             break;
                         }
                 }
                 container.Add(sa);
-                AudioCodecArgument ac = new AudioCodecArgument();
+                AudioCodecArgument ac = new AudioCodecArgument(AudioCodec.Aac);
                 switch (cbAudioCodec.Text.Replace(" ", "").ToLower())
                 {
                     case "aac":
                         {
-                            ac.Value = AudioCodec.Aac;
+                            ac = new AudioCodecArgument(AudioCodec.Aac);
                             break;
                         }
                     default:
                         {
-                            ac.Value = AudioCodec.LibVorbis;
+                            ac= new AudioCodecArgument(AudioCodec.LibVorbis);
                             break;
                         }
                 }
                 container.Add(ac);
                 container.Add(new MapArgument(new string[] { "1:v:0", "0:a:0" }));
-                container.Add(new OutputArgument(new Uri(s.FileName)));
+              //  if (!string.IsNullOrEmpty(NumberTextBox.Text))
+              //  {
+               //     container.Add(new QualityArgument(double.Parse(NumberTextBox.Text)));
+               // }
+                container.Add(new OutputArgument(s.FileName.Trim()));
                 container.Add(new OverrideArgument());
                 V = s.FileName;
                 Task t = Task.Run(() =>
@@ -410,33 +418,6 @@ namespace ScriptGeneratorAVS
                 MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        //private List<string> InputData()
-        //{
-        //    List<string> q = new List<string>();
-        //    string s;
-        //    char sinq = char.Parse("'")
-        //        , a = 'a';
-        //    List<string> Su = Builder.Subtitles;
-        //    if (Su.Count > 1)
-        //    {
-        //        for (int i = 0; i < Su.Count; i++)
-        //        {
-        //            s = Su[i].Replace(@"\\", @"\").Replace('\\','/').Replace(":",@"\:");
-        //            if (i == 0)
-        //                q.Add(@"ass=" + sinq + s  + sinq + "[" + (++a) + "];");
-        //            else
-        //                if (i == Su.Count - 1)
-        //                q.Add("[" + a + "]" + @"ass=" + sinq + s + sinq);
-        //            else
-        //                q.Add("[" + a + "]" + @"ass=" + sinq + s + sinq + "[" + (++a) + "];");
-
-        //        } 
-        //    }
-        //    else
-        //        q.Add(@"ass=\" + sinq + Su[0].Replace(@"\\", @"\").Replace('\\', '/').Replace(":", @"\:") + @"\" + sinq);
-        //    return q;
-        //}
 
         private void Tt_Tick(object sender, EventArgs e)
         {
@@ -561,7 +542,7 @@ namespace ScriptGeneratorAVS
                 Console.WriteLine(downloadLink.ToString());
                 System.Diagnostics.Process.Start(downloadLink.ToString());
                 MessageBox.Show("Upload Complete!\n" + downloadLink.ToString() + "\nCopied to Clipboard!", "Finished!", MessageBoxButton.OK, MessageBoxImage.Information);
-
+                
                 client.Logout();
                 Upt.Stop();
             }
@@ -570,8 +551,28 @@ namespace ScriptGeneratorAVS
         private void StopEncoder()
         {
             encoder.Stop();
-            encoder.Kill();
+            
         }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !IsValid(((TextBox)sender).Text + e.Text);
+        }
+
+        private void prbPro_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Console.WriteLine(e.NewValue/100);
+            TaskbarItemInfo.ProgressValue = e.NewValue/100;
+        }
+
+        public bool IsValid(string str)
+        {
+            double i;
+            return double.TryParse(str, out i) && i >= 0 && i <= 51;
+        }
+
+
+
         //public uploadFileData UploadToMegaAsync(string Userrrr,string Passss,  string filePathOnComputer, string newFileNameOnMega)
         //{
         //    //Implemnt Struct
@@ -580,7 +581,7 @@ namespace ScriptGeneratorAVS
         //    //Start Mega Cient
         //    var myMegaClient = new MegaApiClient();
 
-            
+
         //    //Login To Mega
         //    myMegaClient.Login(Userrrr, Passss);
 
@@ -625,7 +626,7 @@ namespace ScriptGeneratorAVS
         //                return myMegaClient.UploadFileAsync(filePathOnComputer, myFolder, progress, uploadCancellationTokenSource.Token);
         //            }
         //    );
-            
+
         //    INode myFile = td.Result;
         //    //Rename The File In Mega Server
         //    if (string.IsNullOrEmpty(newFileNameOnMega))

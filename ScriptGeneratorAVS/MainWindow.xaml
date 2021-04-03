@@ -8,6 +8,9 @@
     <Window.Effect>
         <DropShadowEffect/>
     </Window.Effect>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="Normal" />
+    </Window.TaskbarItemInfo>
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -42,14 +45,14 @@
                     <Button x:Name="btnPre" Content="Encode" HorizontalAlignment="Left" Height="32" Margin="679,434,0,0" VerticalAlignment="Top" Width="66" Click="btnPre_Click"/>
                     <Button x:Name="btnStopEncode" Content="Stop" HorizontalAlignment="Left" Height="22" Margin="256,444,0,0" VerticalAlignment="Top" Width="52" Click="btnStopEncode_Click"/>
                     <Label x:Name="lblVideoInfo" FontSize="14" Content="0%" Margin="34,412,575,57"/>
-                    <ProgressBar x:Name="prbPro" Margin="34,444,548,0" Height="22" VerticalAlignment="Top"/>
+                    <ProgressBar x:Name="prbPro" Margin="34,444,548,0" Height="22" VerticalAlignment="Top" ValueChanged="prbPro_ValueChanged"/>
                     <ComboBox x:Name="cbFormat" Margin="566,443,136,34" SelectedIndex="0">
                         <ComboBoxItem Content="MKV"/>
                         <ComboBoxItem Content="MP4"/>
                     </ComboBox>
                     <Label Content="File Format" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="566,412,0,0"/>
                     <Label Content="Developed By MikeTMG" Margin="406,437,227,19"/>
-                    <CheckBox x:Name="cbUpload" Content="Upload" HorizontalAlignment="Left" Height="18" Margin="566,383,0,0" VerticalAlignment="Top" Width="74" RenderTransformOrigin="0.5,2.556" IsChecked="True"/>
+                    <CheckBox x:Name="cbUpload" Content="Upload" HorizontalAlignment="Left" Height="18" Margin="566,383,0,0" VerticalAlignment="Top" Width="74" RenderTransformOrigin="0.5,2.556" IsChecked="False"/>
                 </Grid>
             </TabItem>
             <TabItem Margin="17,-2,-36,-4" Header="Advance">
@@ -79,6 +82,8 @@
                         <ComboBoxItem Content="AAC"/>
                         <ComboBoxItem Content="Lib Vorbis"/>
                     </ComboBox>
+                    <Label Content="Quality" FontSize="16" HorizontalAlignment="Left" Margin="21,261,0,0" VerticalAlignment="Top" Width="63"/>
+                    <TextBox x:Name="NumberTextBox" Text="23" PreviewTextInput="NumberValidationTextBox" Margin="21,292,704,188"/>
                 </Grid>
             </TabItem>
 
